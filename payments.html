@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payments – Theomie Properties</title>
+  <link rel="icon" href="public/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="sidebar-logo"><img src="public/logo.png" alt="Theomie Properties" /><span>Theomie Properties</span></div>
+  <nav class="sidebar-nav">
+    <a href="dashboard.html" class="nav-item"><i data-lucide="layout-dashboard"></i>Dashboard</a>
+    <a href="properties.html" class="nav-item"><i data-lucide="building-2"></i>Properties</a>
+    <a href="tenants.html" class="nav-item"><i data-lucide="users"></i>Tenants</a>
+    <a href="payments.html" class="nav-item active"><i data-lucide="pound-sterling"></i>Payments</a>
+    <a href="maintenance.html" class="nav-item"><i data-lucide="wrench"></i>Maintenance</a>
+    <a href="leases.html" class="nav-item"><i data-lucide="file-text"></i>Leases</a>
+    <a href="settings.html" class="nav-item"><i data-lucide="settings"></i>Settings</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-user"><div class="sidebar-avatar">TP</div><div class="sidebar-user-info"><div class="sidebar-user-name">Admin</div><div class="sidebar-user-email">admin@theomieproperties.com</div></div></div>
+    <button class="btn-logout" onclick="logout()"><i data-lucide="log-out"></i>Log out</button>
+  </div>
+</aside>
+<main class="main-content">
+  <div class="space-y-8">
+    <div class="page-header"><div><h1 class="page-title">Payments</h1><p class="page-subtitle">Track rent payments and revenue</p></div><div class="flex gap-3"><button class="btn btn-outline"><i data-lucide="download"></i>Export</button><button class="btn btn-green" onclick="openModal('recordPayModal')"><i data-lucide="plus"></i>Record Payment</button></div></div>
+    <div class="grid-4">
+      <div class="card card-p" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(5,150,105,0.1));border-color:rgba(16,185,129,0.2)"><div class="flex justify-between items-center"><div><p class="text-sm" style="color:#6ee7b7">Collected This Month</p><p class="text-3xl font-bold text-white mt-1">&pound;5,700</p><div class="flex items-center gap-1 mt-2 text-green text-sm"><i data-lucide="arrow-up-right" style="width:16px;height:16px"></i>+12% vs last month</div></div><div class="stat-icon green"><i data-lucide="trending-up"></i></div></div></div>
+      <div class="card card-p"><div class="flex justify-between items-center"><div><p class="text-sm text-muted">Pending</p><p class="text-3xl font-bold text-white mt-1">&pound;2,800</p><p class="text-sm text-dim mt-2">2 payments</p></div><div class="stat-icon yellow"><i data-lucide="clock"></i></div></div></div>
+      <div class="card card-p"><div class="flex justify-between items-center"><div><p class="text-sm text-muted">Overdue</p><p class="text-3xl font-bold text-white mt-1">&pound;2,300</p><p class="text-sm text-red mt-2">2 payments late</p></div><div class="stat-icon red"><i data-lucide="alert-circle"></i></div></div></div>
+      <div class="card card-p"><div class="flex justify-between items-center"><div><p class="text-sm text-muted">Collection Rate</p><p class="text-3xl font-bold text-white mt-1">87%</p><div class="flex items-center gap-1 mt-2 text-green text-sm"><i data-lucide="arrow-up-right" style="width:16px;height:16px"></i>+5% vs last month</div></div><div class="stat-icon blue"><i data-lucide="check-circle"></i></div></div></div>
+    </div>
+    <div>
+      <div class="flex justify-between items-center mb-6" style="flex-wrap:wrap;gap:16px">
+        <div class="tabs-list"><button class="tab-btn active" onclick="switchTab(this,'all')">All</button><button class="tab-btn" onclick="switchTab(this,'paid')">Paid</button><button class="tab-btn" onclick="switchTab(this,'pending')">Pending</button><button class="tab-btn" onclick="switchTab(this,'overdue')">Overdue</button></div>
+        <div class="input-icon-wrap" style="width:240px"><i class="icon" data-lucide="search"></i><input class="input" type="text" id="paySearch" placeholder="Search payments..." oninput="filterPayments()" /></div>
+      </div>
+      <div class="space-y-4" id="paymentsList"></div>
+    </div>
+  </div>
+</main>
+</div>
+<div class="modal-overlay" id="recordPayModal"><div class="modal"><div class="modal-header"><h2 class="modal-title">Record Payment</h2><button class="modal-close" onclick="closeModal('recordPayModal')"><i data-lucide="x"></i></button></div><div class="modal-body"><div><label class="label">Tenant</label><select class="select-el"><option>Select tenant</option><option>Emily Davis</option><option>James Wilson</option><option>Anna Thompson</option></select></div><div class="grid-2"><div><label class="label">Amount (&pound;)</label><input class="input" type="number" placeholder="1200" /></div><div><label class="label">Date</label><input class="input" type="date" /></div></div><div><label class="label">Payment Method</label><select class="select-el"><option>Select method</option><option>Bank Transfer</option><option>Credit Card</option><option>Direct Debit</option><option>Cash</option></select></div><button class="btn btn-green btn-full">Record Payment</button></div></div></div>
+<script src="auth.js"></script>
+<script>
+  checkAuth();
+  const payments = [
+    { tenant:'Sarah Johnson', property:'Oak Street Apartments', unit:'4B', amount:1200, date:'2025-12-01', status:'paid' },
+    { tenant:'Mike Chen', property:'Pine Avenue Duplex', unit:'Unit 2', amount:950, date:'2025-12-01', status:'paid' },
+    { tenant:'Emily Davis', property:'Maple Drive House', unit:'Main', amount:1450, date:'2025-12-05', status:'pending' },
+    { tenant:'James Wilson', property:'Cedar Lane Townhouse', unit:'Main', amount:1100, date:'2025-11-28', status:'overdue' },
+    { tenant:'Lisa Martinez', property:'Elm Court Complex', unit:'3A', amount:1350, date:'2025-12-01', status:'paid' },
+    { tenant:'Robert Brown', property:'Oak Street Apartments', unit:'2C', amount:1200, date:'2025-12-01', status:'paid' },
+    { tenant:'Anna Thompson', property:'Elm Court Complex', unit:'5D', amount:1350, date:'2025-12-03', status:'pending' },
+    { tenant:'David Lee', property:'Oak Street Apartments', unit:'1A', amount:1200, date:'2025-11-25', status:'overdue' },
+  ];
+  let activeTab = 'all';
+  function statusBadge(s) {
+    if (s==='paid') return '<span class="badge badge-green"><i data-lucide="check-circle"></i>Paid</span>';
+    if (s==='pending') return '<span class="badge badge-yellow"><i data-lucide="clock"></i>Pending</span>';
+    return '<span class="badge badge-red"><i data-lucide="alert-circle"></i>Overdue</span>';
+  }
+  function fmtDate(d) { return new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); }
+  function renderPayments() {
+    const s = document.getElementById('paySearch').value.toLowerCase();
+    const list = payments.filter(p => {
+      const match = p.tenant.toLowerCase().includes(s) || p.property.toLowerCase().includes(s);
+      return match && (activeTab === 'all' || p.status === activeTab);
+    });
+    const el = document.getElementById('paymentsList');
+    if (!list.length) { el.innerHTML = '<div class="empty-state"><p class="text-muted">No payments found.</p></div>'; return; }
+    const colors = {paid:'rgba(16,185,129,0.1)',pending:'rgba(245,158,11,0.1)',overdue:'rgba(239,68,68,0.1)'};
+    const textColors = {paid:'#34d399',pending:'#fbbf24',overdue:'#f87171'};
+    el.innerHTML = list.map(p => `
+      <div class="row-card" style="flex-wrap:wrap;gap:12px">
+        <div style="width:48px;height:48px;border-radius:12px;background:${colors[p.status]};color:${textColors[p.status]};display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="pound-sterling" style="width:24px;height:24px"></i></div>
+        <div class="flex-1"><p class="font-semibold text-white">${p.tenant}</p><p class="text-sm text-muted">${p.property} &bull; Unit ${p.unit}</p></div>
+        <div class="text-right"><p class="text-lg font-bold text-white">&pound;${p.amount.toLocaleString()}</p><div class="flex items-center gap-1 text-muted text-sm" style="justify-content:flex-end"><i data-lucide="calendar" style="width:12px;height:12px"></i>${fmtDate(p.date)}</div></div>
+        <div style="display:flex;align-items:center;gap:8px">${statusBadge(p.status)}${p.status!=='paid'?'<button class="btn btn-green btn-sm">Record</button>':''}</div>
+      </div>
+    `).join('');
+    lucide.createIcons();
+  }
+  function switchTab(btn, tab) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active'); activeTab = tab; renderPayments();
+  }
+  function filterPayments() { renderPayments(); }
+  lucide.createIcons(); renderPayments();
+</script>
+</body>
+</html>

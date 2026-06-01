@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Properties – Theomie Properties</title>
+  <link rel="icon" href="public/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    .prop-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+    @media(max-width:1200px){.prop-grid{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:768px){.prop-grid{grid-template-columns:1fr;}}
+    .prop-card { background: rgba(15,23,42,0.5); border: 1px solid #334155; border-radius: 12px; overflow: hidden; transition: border-color 0.15s; }
+    .prop-card:hover { border-color: #475569; }
+    .prop-card:hover .prop-img { transform: scale(1.05); }
+    .img-wrap { position: relative; overflow: hidden; height: 180px; }
+    .prop-img { width:100%; height:100%; object-fit:cover; transition: transform 0.4s; display: block; }
+    .img-overlay { position:absolute;inset:0;background:linear-gradient(to top,rgba(15,23,42,0.7),transparent); }
+    .img-type { position:absolute;bottom:10px;left:10px; }
+    .img-menu { position:absolute;top:10px;right:10px; }
+    .prop-body { padding: 20px; }
+    .prop-stats { display:flex;gap:16px;margin-top:12px; }
+    .prop-stat { display:flex;align-items:center;gap:6px;color:#94a3b8;font-size:13px; }
+    .prop-stat i { width:14px;height:14px; }
+    .prop-footer { display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:16px;border-top:1px solid #334155; }
+  </style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="sidebar-logo"><img src="public/logo.png" alt="Theomie Properties" /><span>Theomie Properties</span></div>
+  <nav class="sidebar-nav">
+    <a href="dashboard.html" class="nav-item"><i data-lucide="layout-dashboard"></i>Dashboard</a>
+    <a href="properties.html" class="nav-item active"><i data-lucide="building-2"></i>Properties</a>
+    <a href="tenants.html" class="nav-item"><i data-lucide="users"></i>Tenants</a>
+    <a href="payments.html" class="nav-item"><i data-lucide="pound-sterling"></i>Payments</a>
+    <a href="maintenance.html" class="nav-item"><i data-lucide="wrench"></i>Maintenance</a>
+    <a href="leases.html" class="nav-item"><i data-lucide="file-text"></i>Leases</a>
+    <a href="settings.html" class="nav-item"><i data-lucide="settings"></i>Settings</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-user"><div class="sidebar-avatar">TP</div><div class="sidebar-user-info"><div class="sidebar-user-name">Admin</div><div class="sidebar-user-email">admin@theomieproperties.com</div></div></div>
+    <button class="btn-logout" onclick="logout()"><i data-lucide="log-out"></i>Log out</button>
+  </div>
+</aside>
+<main class="main-content">
+  <div class="space-y-6">
+    <div class="page-header">
+      <div><h1 class="page-title">Properties</h1><p class="page-subtitle">Manage your rental properties</p></div>
+      <button class="btn btn-green" onclick="openModal('addPropModal')"><i data-lucide="plus"></i>Add Property</button>
+    </div>
+    <div class="filter-bar">
+      <div class="input-icon-wrap" style="flex:1;max-width:400px"><i class="icon" data-lucide="search"></i><input class="input" type="text" id="propSearch" placeholder="Search properties..." oninput="filterProps()" /></div>
+      <select class="select-el" id="propType" onchange="filterProps()" style="width:180px"><option value="">All Types</option><option value="Multi-family">Multi-family</option><option value="Single-family">Single-family</option><option value="Duplex">Duplex</option><option value="Townhouse">Townhouse</option></select>
+    </div>
+    <div class="prop-grid" id="propGrid">
+      <div class="prop-card" data-name="oak street apartments" data-type="Multi-family">
+        <div class="img-wrap"><img class="prop-img" src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&h=300&fit=crop" alt="Oak Street Apartments" /><div class="img-overlay"></div><div class="img-type"><span class="badge badge-green">Multi-family</span></div><div class="img-menu dropdown"><button class="btn btn-ghost btn-icon" onclick="toggleDropdown(this)" style="background:rgba(0,0,0,0.5)"><i data-lucide="more-vertical"></i></button><div class="dropdown-menu"><button class="dropdown-item">Edit</button><button class="dropdown-item">View Details</button><button class="dropdown-item danger">Delete</button></div></div></div>
+        <div class="prop-body"><h3 class="font-semibold text-white">Oak Street Apartments</h3><div class="flex items-center gap-1 text-muted text-sm mt-1"><i data-lucide="map-pin" style="width:14px;height:14px"></i>123 Oak Street, London, E1 6AN</div><div class="prop-stats"><div class="prop-stat"><i data-lucide="bed"></i>2</div><div class="prop-stat"><i data-lucide="bath"></i>1</div><div class="prop-stat"><i data-lucide="square"></i>950 ft²</div></div><div class="prop-footer"><div class="flex items-center gap-2 text-sm"><i data-lucide="users" style="width:16px;height:16px;color:#94a3b8"></i><span class="text-green">7</span><span class="text-muted">/8</span></div><div><span class="text-xl font-bold text-white">&pound;1,200</span><span class="text-muted text-sm">/mo</span></div></div></div>
+      </div>
+      <div class="prop-card" data-name="pine avenue duplex" data-type="Duplex">
+        <div class="img-wrap"><img class="prop-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop" alt="Pine Avenue Duplex" /><div class="img-overlay"></div><div class="img-type"><span class="badge badge-blue">Duplex</span></div><div class="img-menu dropdown"><button class="btn btn-ghost btn-icon" onclick="toggleDropdown(this)" style="background:rgba(0,0,0,0.5)"><i data-lucide="more-vertical"></i></button><div class="dropdown-menu"><button class="dropdown-item">Edit</button><button class="dropdown-item">View Details</button><button class="dropdown-item danger">Delete</button></div></div></div>
+        <div class="prop-body"><h3 class="font-semibold text-white">Pine Avenue Duplex</h3><div class="flex items-center gap-1 text-muted text-sm mt-1"><i data-lucide="map-pin" style="width:14px;height:14px"></i>456 Pine Ave, London, SW1A 1AA</div><div class="prop-stats"><div class="prop-stat"><i data-lucide="bed"></i>1</div><div class="prop-stat"><i data-lucide="bath"></i>1</div><div class="prop-stat"><i data-lucide="square"></i>750 ft²</div></div><div class="prop-footer"><div class="flex items-center gap-2 text-sm"><i data-lucide="users" style="width:16px;height:16px;color:#94a3b8"></i><span class="text-green">2</span><span class="text-muted">/2</span></div><div><span class="text-xl font-bold text-white">&pound;950</span><span class="text-muted text-sm">/mo</span></div></div></div>
+      </div>
+      <div class="prop-card" data-name="maple drive house" data-type="Single-family">
+        <div class="img-wrap"><img class="prop-img" src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=300&fit=crop" alt="Maple Drive House" /><div class="img-overlay"></div><div class="img-type"><span class="badge badge-purple">Single-family</span></div><div class="img-menu dropdown"><button class="btn btn-ghost btn-icon" onclick="toggleDropdown(this)" style="background:rgba(0,0,0,0.5)"><i data-lucide="more-vertical"></i></button><div class="dropdown-menu"><button class="dropdown-item">Edit</button><button class="dropdown-item">View Details</button><button class="dropdown-item danger">Delete</button></div></div></div>
+        <div class="prop-body"><h3 class="font-semibold text-white">Maple Drive House</h3><div class="flex items-center gap-1 text-muted text-sm mt-1"><i data-lucide="map-pin" style="width:14px;height:14px"></i>789 Maple Dr, Manchester, M1 1AA</div><div class="prop-stats"><div class="prop-stat"><i data-lucide="bed"></i>3</div><div class="prop-stat"><i data-lucide="bath"></i>2</div><div class="prop-stat"><i data-lucide="square"></i>1,800 ft²</div></div><div class="prop-footer"><div class="flex items-center gap-2 text-sm"><i data-lucide="users" style="width:16px;height:16px;color:#94a3b8"></i><span class="text-green">1</span><span class="text-muted">/1</span></div><div><span class="text-xl font-bold text-white">&pound;1,450</span><span class="text-muted text-sm">/mo</span></div></div></div>
+      </div>
+      <div class="prop-card" data-name="cedar lane townhouse" data-type="Townhouse">
+        <div class="img-wrap"><img class="prop-img" src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=300&fit=crop" alt="Cedar Lane Townhouse" /><div class="img-overlay"></div><div class="img-type"><span class="badge badge-orange">Townhouse</span></div><div class="img-menu dropdown"><button class="btn btn-ghost btn-icon" onclick="toggleDropdown(this)" style="background:rgba(0,0,0,0.5)"><i data-lucide="more-vertical"></i></button><div class="dropdown-menu"><button class="dropdown-item">Edit</button><button class="dropdown-item">View Details</button><button class="dropdown-item danger">Delete</button></div></div></div>
+        <div class="prop-body"><h3 class="font-semibold text-white">Cedar Lane Townhouse</h3><div class="flex items-center gap-1 text-muted text-sm mt-1"><i data-lucide="map-pin" style="width:14px;height:14px"></i>321 Cedar Lane, Birmingham, B1 1AA</div><div class="prop-stats"><div class="prop-stat"><i data-lucide="bed"></i>2</div><div class="prop-stat"><i data-lucide="bath"></i>2</div><div class="prop-stat"><i data-lucide="square"></i>1,200 ft²</div></div><div class="prop-footer"><div class="flex items-center gap-2 text-sm"><i data-lucide="users" style="width:16px;height:16px;color:#94a3b8"></i><span class="text-green">1</span><span class="text-muted">/1</span></div><div><span class="text-xl font-bold text-white">&pound;1,100</span><span class="text-muted text-sm">/mo</span></div></div></div>
+      </div>
+      <div class="prop-card" data-name="elm court complex" data-type="Multi-family">
+        <div class="img-wrap"><img class="prop-img" src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop" alt="Elm Court Complex" /><div class="img-overlay"></div><div class="img-type"><span class="badge badge-green">Multi-family</span></div><div class="img-menu dropdown"><button class="btn btn-ghost btn-icon" onclick="toggleDropdown(this)" style="background:rgba(0,0,0,0.5)"><i data-lucide="more-vertical"></i></button><div class="dropdown-menu"><button class="dropdown-item">Edit</button><button class="dropdown-item">View Details</button><button class="dropdown-item danger">Delete</button></div></div></div>
+        <div class="prop-body"><h3 class="font-semibold text-white">Elm Court Complex</h3><div class="flex items-center gap-1 text-muted text-sm mt-1"><i data-lucide="map-pin" style="width:14px;height:14px"></i>555 Elm Court, Leeds, LS1 1AA</div><div class="prop-stats"><div class="prop-stat"><i data-lucide="bed"></i>2</div><div class="prop-stat"><i data-lucide="bath"></i>2</div><div class="prop-stat"><i data-lucide="square"></i>1,100 ft²</div></div><div class="prop-footer"><div class="flex items-center gap-2 text-sm"><i data-lucide="users" style="width:16px;height:16px;color:#94a3b8"></i><span class="text-yellow">11</span><span class="text-muted">/12</span></div><div><span class="text-xl font-bold text-white">&pound;1,350</span><span class="text-muted text-sm">/mo</span></div></div></div>
+      </div>
+      <div class="prop-card" data-name="birch boulevard villa" data-type="Single-family">
+        <div class="img-wrap"><img class="prop-img" src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=300&fit=crop" alt="Birch Boulevard Villa" /><div class="img-overlay"></div><div class="img-type"><span class="badge badge-red">Vacant</span></div><div class="img-menu dropdown"><button class="btn btn-ghost btn-icon" onclick="toggleDropdown(this)" style="background:rgba(0,0,0,0.5)"><i data-lucide="more-vertical"></i></button><div class="dropdown-menu"><button class="dropdown-item">Edit</button><button class="dropdown-item">View Details</button><button class="dropdown-item danger">Delete</button></div></div></div>
+        <div class="prop-body"><h3 class="font-semibold text-white">Birch Boulevard Villa</h3><div class="flex items-center gap-1 text-muted text-sm mt-1"><i data-lucide="map-pin" style="width:14px;height:14px"></i>888 Birch Blvd, Bristol, BS1 1AA</div><div class="prop-stats"><div class="prop-stat"><i data-lucide="bed"></i>4</div><div class="prop-stat"><i data-lucide="bath"></i>3</div><div class="prop-stat"><i data-lucide="square"></i>2,500 ft²</div></div><div class="prop-footer"><div class="flex items-center gap-2 text-sm"><i data-lucide="users" style="width:16px;height:16px;color:#94a3b8"></i><span class="text-red">0</span><span class="text-muted">/1</span></div><div><span class="text-xl font-bold text-white">&pound;2,200</span><span class="text-muted text-sm">/mo</span></div></div></div>
+      </div>
+    </div>
+    <div class="empty-state hidden" id="emptyState"><i data-lucide="building-2"></i><p>No properties found matching your criteria.</p></div>
+  </div>
+</main>
+</div>
+<div class="modal-overlay" id="addPropModal"><div class="modal"><div class="modal-header"><h2 class="modal-title">Add New Property</h2><button class="modal-close" onclick="closeModal('addPropModal')"><i data-lucide="x"></i></button></div><div class="modal-body"><div><label class="label">Property Name</label><input class="input" placeholder="e.g., Oak Street Apartments" /></div><div><label class="label">Address</label><input class="input" placeholder="Full address" /></div><div class="grid-2"><div><label class="label">Property Type</label><select class="select-el"><option>Select type</option><option>Single-family</option><option>Multi-family</option><option>Duplex</option><option>Townhouse</option></select></div><div><label class="label">Units</label><input class="input" type="number" placeholder="1" /></div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px"><div><label class="label">Bedrooms</label><input class="input" type="number" placeholder="2" /></div><div><label class="label">Bathrooms</label><input class="input" type="number" placeholder="1" /></div><div><label class="label">Sq. Ft.</label><input class="input" type="number" placeholder="1000" /></div></div><div><label class="label">Monthly Rent (&pound;)</label><input class="input" type="number" placeholder="1200" /></div><button class="btn btn-green btn-full">Add Property</button></div></div></div>
+<script src="auth.js"></script>
+<script>
+  checkAuth(); lucide.createIcons();
+  function filterProps() {
+    const s = document.getElementById('propSearch').value.toLowerCase();
+    const t = document.getElementById('propType').value;
+    let visible = 0;
+    document.querySelectorAll('.prop-card').forEach(card => {
+      const show = (!s || card.dataset.name.includes(s)) && (!t || card.dataset.type === t);
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    document.getElementById('emptyState').classList.toggle('hidden', visible > 0);
+  }
+</script>
+</body>
+</html>
