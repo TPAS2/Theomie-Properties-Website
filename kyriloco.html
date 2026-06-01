@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🎉 Kyri Loco</title>
+  <link rel="icon" href="public/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #0f172a; color: white; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+    canvas { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+    .orb { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; animation: float linear infinite; }
+    @keyframes float { 0% { transform: translate(0,0) scale(1); } 33% { transform: translate(60px,-80px) scale(1.1); } 66% { transform: translate(-40px,40px) scale(0.9); } 100% { transform: translate(0,0) scale(1); } }
+    .content { position: relative; z-index: 10; text-align: center; padding: 40px 24px; max-width: 600px; animation: fadeIn 1s ease; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+    .emoji { font-size: 80px; margin-bottom: 24px; display: block; animation: bounce 1s ease infinite alternate; }
+    @keyframes bounce { from { transform:translateY(0); } to { transform:translateY(-16px); } }
+    h1 { font-size: clamp(40px,8vw,72px); font-weight: 900; background: linear-gradient(135deg,#f59e0b,#ef4444,#a855f7,#3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.1; margin-bottom: 16px; }
+    p { font-size: 20px; color: #94a3b8; margin-bottom: 32px; line-height: 1.6; }
+    .tags { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 40px; }
+    .tag { padding: 8px 20px; border-radius: 999px; font-size: 14px; font-weight: 600; animation: pulse 2s ease infinite; }
+    @keyframes pulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.05); } }
+    .tag:nth-child(1) { background:rgba(245,158,11,0.2);border:1px solid rgba(245,158,11,0.4);color:#fbbf24;animation-delay:0s; }
+    .tag:nth-child(2) { background:rgba(239,68,68,0.2);border:1px solid rgba(239,68,68,0.4);color:#f87171;animation-delay:0.3s; }
+    .tag:nth-child(3) { background:rgba(168,85,247,0.2);border:1px solid rgba(168,85,247,0.4);color:#c084fc;animation-delay:0.6s; }
+    .tag:nth-child(4) { background:rgba(59,130,246,0.2);border:1px solid rgba(59,130,246,0.4);color:#60a5fa;animation-delay:0.9s; }
+    .tag:nth-child(5) { background:rgba(16,185,129,0.2);border:1px solid rgba(16,185,129,0.4);color:#34d399;animation-delay:1.2s; }
+    .back-btn { display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#94a3b8;font-size:15px;font-weight:500;cursor:pointer;transition:all 0.2s;text-decoration:none; }
+    .back-btn:hover { background:rgba(255,255,255,0.1);color:white; }
+  </style>
+</head>
+<body>
+<div class="orb" style="width:500px;height:500px;background:rgba(245,158,11,0.15);top:-100px;left:-100px;animation-duration:12s"></div>
+<div class="orb" style="width:400px;height:400px;background:rgba(239,68,68,0.12);top:20%;right:-80px;animation-duration:15s;animation-delay:-4s"></div>
+<div class="orb" style="width:350px;height:350px;background:rgba(168,85,247,0.1);bottom:-50px;left:20%;animation-duration:18s;animation-delay:-8s"></div>
+<div class="orb" style="width:300px;height:300px;background:rgba(59,130,246,0.12);bottom:10%;right:10%;animation-duration:10s;animation-delay:-2s"></div>
+<canvas id="particles"></canvas>
+<div class="content">
+  <span class="emoji">🤪</span>
+  <h1>KYRI LOCO!</h1>
+  <p>You found the secret page! 🎉<br>This one's for the loco ones.</p>
+  <div class="tags">
+    <span class="tag">🔥 On Fire</span>
+    <span class="tag">💥 Absolutely Loco</span>
+    <span class="tag">🎯 Too Good</span>
+    <span class="tag">⚡ Lightning Fast</span>
+    <span class="tag">🏆 Legend</span>
+  </div>
+  <a href="index.html" class="back-btn">&larr; Back to the real world</a>
+</div>
+<script>
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  window.addEventListener('resize', resize); resize();
+  const colors = ['#f59e0b','#ef4444','#a855f7','#3b82f6','#10b981','#06b6d4','#ec4899'];
+  for (let i = 0; i < 80; i++) {
+    particles.push({ x:Math.random()*window.innerWidth, y:Math.random()*window.innerHeight, r:Math.random()*4+1, dx:(Math.random()-0.5)*1.5, dy:(Math.random()-0.5)*1.5, color:colors[Math.floor(Math.random()*colors.length)], alpha:Math.random()*0.6+0.2 });
+  }
+  function animate() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p => {
+      p.x+=p.dx; p.y+=p.dy;
+      if(p.x<0||p.x>canvas.width) p.dx*=-1;
+      if(p.y<0||p.y>canvas.height) p.dy*=-1;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.color; ctx.globalAlpha=p.alpha; ctx.fill();
+    });
+    ctx.globalAlpha=1; requestAnimationFrame(animate);
+  }
+  animate();
+</script>
+</body>
+</html>

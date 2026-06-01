@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maintenance – Theomie Properties</title>
+  <link rel="icon" href="public/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="sidebar-logo"><img src="public/logo.png" alt="Theomie Properties" /><span>Theomie Properties</span></div>
+  <nav class="sidebar-nav">
+    <a href="dashboard.html" class="nav-item"><i data-lucide="layout-dashboard"></i>Dashboard</a>
+    <a href="properties.html" class="nav-item"><i data-lucide="building-2"></i>Properties</a>
+    <a href="tenants.html" class="nav-item"><i data-lucide="users"></i>Tenants</a>
+    <a href="payments.html" class="nav-item"><i data-lucide="pound-sterling"></i>Payments</a>
+    <a href="maintenance.html" class="nav-item active"><i data-lucide="wrench"></i>Maintenance</a>
+    <a href="leases.html" class="nav-item"><i data-lucide="file-text"></i>Leases</a>
+    <a href="settings.html" class="nav-item"><i data-lucide="settings"></i>Settings</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-user"><div class="sidebar-avatar">TP</div><div class="sidebar-user-info"><div class="sidebar-user-name">Admin</div><div class="sidebar-user-email">admin@theomieproperties.com</div></div></div>
+    <button class="btn-logout" onclick="logout()"><i data-lucide="log-out"></i>Log out</button>
+  </div>
+</aside>
+<main class="main-content">
+  <div class="space-y-6">
+    <div class="page-header"><div><h1 class="page-title">Maintenance</h1><p class="page-subtitle">Track and manage maintenance requests</p></div><button class="btn btn-green" onclick="openModal('addMaintModal')"><i data-lucide="plus"></i>New Request</button></div>
+    <div class="grid-4">
+      <div class="card card-p"><div class="flex justify-between items-center"><div><p class="text-sm text-muted">Total Requests</p><p class="text-3xl font-bold text-white mt-1">6</p></div><div class="stat-icon blue"><i data-lucide="wrench"></i></div></div></div>
+      <div class="card card-p"><div class="flex justify-between items-center"><div><p class="text-sm text-muted">Pending</p><p class="text-3xl font-bold text-white mt-1">3</p></div><div class="stat-icon yellow"><i data-lucide="clock"></i></div></div></div>
+      <div class="card card-p"><div class="flex justify-between items-center"><div><p class="text-sm text-muted">In Progress</p><p class="text-3xl font-bold text-white mt-1">2</p></div><div class="stat-icon blue"><i data-lucide="settings"></i></div></div></div>
+      <div class="card card-p"><div class="flex justify-between items-center"><div><p class="text-sm text-muted">Completed</p><p class="text-3xl font-bold text-white mt-1">1</p></div><div class="stat-icon green"><i data-lucide="check-circle"></i></div></div></div>
+    </div>
+    <div class="filter-bar">
+      <div class="input-icon-wrap" style="flex:1;max-width:360px"><i class="icon" data-lucide="search"></i><input class="input" type="text" id="maintSearch" placeholder="Search requests..." oninput="filterMaint()" /></div>
+      <div class="filter-pills" id="statusFilters">
+        <button class="filter-pill active" onclick="setFilter(this,'')">All</button>
+        <button class="filter-pill" onclick="setFilter(this,'pending')">Pending</button>
+        <button class="filter-pill" onclick="setFilter(this,'in_progress')">In Progress</button>
+        <button class="filter-pill" onclick="setFilter(this,'completed')">Completed</button>
+      </div>
+      <div class="filter-pills" id="priorityFilters">
+        <button class="filter-pill" onclick="setPriority(this,'')">All Priority</button>
+        <button class="filter-pill" onclick="setPriority(this,'urgent')">Urgent</button>
+        <button class="filter-pill" onclick="setPriority(this,'high')">High</button>
+        <button class="filter-pill" onclick="setPriority(this,'medium')">Medium</button>
+        <button class="filter-pill" onclick="setPriority(this,'low')">Low</button>
+      </div>
+    </div>
+    <div class="space-y-4" id="maintList"></div>
+  </div>
+</main>
+</div>
+<div class="modal-overlay" id="addMaintModal"><div class="modal"><div class="modal-header"><h2 class="modal-title">New Maintenance Request</h2><button class="modal-close" onclick="closeModal('addMaintModal')"><i data-lucide="x"></i></button></div><div class="modal-body"><div><label class="label">Title</label><input class="input" placeholder="e.g., Leaky faucet" /></div><div><label class="label">Description</label><textarea class="textarea-el" placeholder="Describe the issue..."></textarea></div><div class="grid-2"><div><label class="label">Property</label><select class="select-el"><option>Select property</option><option>Oak Street Apartments</option><option>Pine Avenue Duplex</option><option>Maple Drive House</option><option>Cedar Lane Townhouse</option><option>Elm Court Complex</option></select></div><div><label class="label">Unit</label><input class="input" placeholder="4B" /></div></div><div class="grid-2"><div><label class="label">Priority</label><select class="select-el"><option>Low</option><option>Medium</option><option>High</option><option>Urgent</option></select></div><div><label class="label">Category</label><select class="select-el"><option>Plumbing</option><option>Electrical</option><option>HVAC</option><option>Security</option><option>Appliance</option><option>Other</option></select></div></div><button class="btn btn-green btn-full">Submit Request</button></div></div></div>
+<script src="auth.js"></script>
+<script>
+  checkAuth();
+  const requests = [
+    { id:1, title:'Leaky faucet in bathroom', desc:'The bathroom sink faucet has been dripping constantly.', property:'Oak Street Apartments', unit:'4B', tenant:'Sarah Johnson', priority:'low', status:'in_progress', date:'2025-11-28', assignedTo:"Mike's Plumbing", category:'Plumbing' },
+    { id:2, title:'Broken heater – No heat', desc:'Heater stopped working completely. Temperature is very cold.', property:'Pine Avenue Duplex', unit:'Unit 2', tenant:'Mike Chen', priority:'urgent', status:'pending', date:'2025-12-01', assignedTo:'', category:'HVAC' },
+    { id:3, title:'Door lock replacement needed', desc:'Front door lock is sticking and difficult to open.', property:'Maple Drive House', unit:'Main', tenant:'Emily Davis', priority:'medium', status:'pending', date:'2025-11-30', assignedTo:'', category:'Security' },
+    { id:4, title:'Kitchen appliance fault', desc:'Dishwasher not draining properly, leaving standing water.', property:'Cedar Lane Townhouse', unit:'Main', tenant:'James Wilson', priority:'medium', status:'in_progress', date:'2025-11-25', assignedTo:'Appliance Pro', category:'Appliance' },
+    { id:5, title:'Window seal damaged', desc:'Bedroom window seal is broken, causing a draught.', property:'Elm Court Complex', unit:'3A', tenant:'Lisa Martinez', priority:'low', status:'pending', date:'2025-12-02', assignedTo:'', category:'Other' },
+    { id:6, title:'Electrical socket not working', desc:'Living room socket stopped working after a power surge.', property:'Oak Street Apartments', unit:'2C', tenant:'Robert Brown', priority:'high', status:'completed', date:'2025-11-20', assignedTo:'Spark Electrical', category:'Electrical' },
+  ];
+  let statusFilter = '', priorityFilter = '';
+  function priorityBadge(p) {
+    const map = { urgent:'badge-red', high:'badge-orange', medium:'badge-yellow', low:'badge-slate' };
+    return `<span class="badge ${map[p]||'badge-slate'}">${p}</span>`;
+  }
+  function statusBadge(s) {
+    if (s==='pending') return '<span class="badge badge-yellow"><i data-lucide="clock"></i>Pending</span>';
+    if (s==='in_progress') return '<span class="badge badge-blue">In Progress</span>';
+    return '<span class="badge badge-green"><i data-lucide="check-circle"></i>Completed</span>';
+  }
+  function fmtDate(d) { return new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); }
+  function renderMaint() {
+    const s = document.getElementById('maintSearch').value.toLowerCase();
+    const list = requests.filter(r => {
+      const match = r.title.toLowerCase().includes(s) || r.property.toLowerCase().includes(s) || r.tenant.toLowerCase().includes(s);
+      return match && (!statusFilter || r.status===statusFilter) && (!priorityFilter || r.priority===priorityFilter);
+    });
+    const el = document.getElementById('maintList');
+    if (!list.length) { el.innerHTML = '<div class="empty-state"><p class="text-muted">No requests found.</p></div>'; return; }
+    el.innerHTML = list.map(r => `
+      <div class="card"><div class="card-body">
+        <div class="flex justify-between items-start" style="flex-wrap:wrap;gap:12px">
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-2" style="flex-wrap:wrap"><h3 class="font-semibold text-white">${r.title}</h3>${priorityBadge(r.priority)}${statusBadge(r.status)}<span class="badge badge-slate">${r.category}</span></div>
+            <p class="text-sm text-muted mb-4">${r.desc}</p>
+            <div class="flex gap-6" style="flex-wrap:wrap">
+              <div class="flex items-center gap-2 text-sm text-muted"><i data-lucide="building-2" style="width:14px;height:14px"></i>${r.property} &bull; ${r.unit}</div>
+              <div class="flex items-center gap-2 text-sm text-muted"><i data-lucide="user" style="width:14px;height:14px"></i>${r.tenant}</div>
+              <div class="flex items-center gap-2 text-sm text-muted"><i data-lucide="calendar" style="width:14px;height:14px"></i>${fmtDate(r.date)}</div>
+              ${r.assignedTo?`<div class="flex items-center gap-2 text-sm text-muted"><i data-lucide="wrench" style="width:14px;height:14px"></i>${r.assignedTo}</div>`:''}
+            </div>
+          </div>
+          <div class="flex gap-2">
+            ${r.status!=='completed'?'<button class="btn btn-green btn-sm">Mark Complete</button>':''}
+            <button class="btn btn-outline btn-sm">Edit</button>
+          </div>
+        </div>
+      </div></div>
+    `).join('');
+    lucide.createIcons();
+  }
+  function setFilter(btn, val) {
+    document.querySelectorAll('#statusFilters .filter-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active'); statusFilter = val; renderMaint();
+  }
+  function setPriority(btn, val) {
+    document.querySelectorAll('#priorityFilters .filter-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active'); priorityFilter = val; renderMaint();
+  }
+  function filterMaint() { renderMaint(); }
+  lucide.createIcons(); renderMaint();
+</script>
+</body>
+</html>
