@@ -1,4 +1,4 @@
-import { Building2, Phone, Mail, MapPin, CheckCircle, ArrowRight, Home as HomeIcon, Key, Shield, Wrench } from "lucide-react";
+import { Phone, Mail, MapPin, CheckCircle, ArrowRight, Home as HomeIcon, Key, Shield, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 

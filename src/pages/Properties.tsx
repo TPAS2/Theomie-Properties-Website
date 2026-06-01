@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Building2, Plus, Search, MapPin, Bed, Bath, Square, MoreVertical, Users, DollarSign } from "lucide-react";
+import { Building2, Plus, Search, MapPin, Bed, Bath, Square, MoreVertical, Users } from "lucide-react";
 
 interface Property {
   id: number;

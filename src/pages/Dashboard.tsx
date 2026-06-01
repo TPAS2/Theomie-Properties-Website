@@ -6,7 +6,6 @@ import {
   Users,
   DollarSign,
   Wrench,
-  TrendingUp,
   TrendingDown,
   AlertCircle,
   CheckCircle,
