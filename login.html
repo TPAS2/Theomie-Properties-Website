@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login – Theomie Properties</title>
+  <link rel="icon" href="public/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+      position: relative; overflow: hidden;
+    }
+    .orb1 { position: absolute; top: 10%; left: 10%; width: 400px; height: 400px; background: rgba(59,130,246,0.15); border-radius: 50%; filter: blur(80px); }
+    .orb2 { position: absolute; bottom: 10%; right: 10%; width: 300px; height: 300px; background: rgba(6,182,212,0.1); border-radius: 50%; filter: blur(80px); }
+    .card {
+      background: rgba(15,23,42,0.8);
+      border: 1px solid #334155;
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%; max-width: 400px;
+      position: relative; z-index: 1;
+      backdrop-filter: blur(8px);
+    }
+    .logo-wrap { text-align: center; margin-bottom: 32px; }
+    .logo-wrap img { height: 80px; mix-blend-mode: lighten; border-radius: 12px; }
+    .logo-wrap h1 { font-size: 22px; font-weight: 700; margin-top: 12px; }
+    .logo-wrap p { color: #94a3b8; font-size: 14px; margin-top: 4px; }
+    label { display: block; font-size: 13px; font-weight: 500; color: #94a3b8; margin-bottom: 8px; }
+    .input-wrap { position: relative; margin-bottom: 24px; }
+    .input-wrap i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #64748b; }
+    input[type=password] {
+      width: 100%; padding: 10px 12px 10px 40px;
+      background: #1e293b; border: 1px solid #334155;
+      border-radius: 10px; color: #f8fafc; font-size: 15px;
+      font-family: inherit; outline: none;
+      transition: border-color 0.15s;
+    }
+    input[type=password]:focus { border-color: #3b82f6; }
+    input[type=password]::placeholder { color: #475569; }
+    .btn {
+      width: 100%; padding: 12px;
+      background: linear-gradient(to right, #3b82f6, #06b6d4);
+      color: white; border: none; border-radius: 10px;
+      font-size: 15px; font-weight: 600; cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .btn:hover { opacity: 0.9; }
+    .error {
+      display: none; background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.3);
+      color: #f87171; border-radius: 10px;
+      padding: 12px; font-size: 13px; text-align: center;
+      margin-bottom: 16px;
+    }
+    .error.show { display: block; }
+    .back { display: block; text-align: center; margin-top: 20px; font-size: 13px; color: #64748b; }
+    .back a { color: #60a5fa; }
+    .back a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="orb1"></div>
+  <div class="orb2"></div>
+
+  <div class="card">
+    <div class="logo-wrap">
+      <img src="public/logo.png" alt="Theomie Properties" />
+      <h1>Welcome Back</h1>
+      <p>Sign in to Theomie Properties Portal</p>
+    </div>
+
+    <label for="password">Password</label>
+    <div class="input-wrap">
+      <i data-lucide="lock"></i>
+      <input type="password" id="password" placeholder="Enter your password" onkeydown="if(event.key==='Enter')login()" />
+    </div>
+
+    <div class="error" id="error">Incorrect password. Please try again.</div>
+    <button class="btn" onclick="login()">Sign In</button>
+
+    <p class="back"><a href="index.html">&larr; Back to website</a></p>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    function login() {
+      const pw = document.getElementById('password').value;
+      if (pw === 'TPAS217') {
+        sessionStorage.setItem('authenticated', 'true');
+        window.location.href = 'dashboard.html';
+      } else if (pw === 'PocoLoco') {
+        window.location.href = 'kyriloco.html';
+      } else {
+        document.getElementById('error').classList.add('show');
+        document.getElementById('password').value = '';
+      }
+    }
+  </script>
+</body>
+</html>
