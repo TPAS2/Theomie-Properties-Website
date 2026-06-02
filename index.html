@@ -13,235 +13,311 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root { --blue: #3b82f6; --cyan: #06b6d4; }
-    body { font-family: 'Inter', sans-serif; background: #0f172a; color: #f8fafc; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+    body { font-family: 'Inter', sans-serif; background: #0f172a; color: #f8fafc; -webkit-font-smoothing: antialiased; overflow: hidden; }
     a { text-decoration: none; color: inherit; }
 
+    /* ── Full-page scroll container ── */
+    #scroll-container {
+      height: 100vh;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+    .page {
+      height: 100vh;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Top nav ── */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
-      background: rgba(15,23,42,0.8); backdrop-filter: blur(12px);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(15,23,42,0.85); backdrop-filter: blur(12px);
       border-bottom: 1px solid #334155;
     }
     .nav-inner {
       max-width: 1280px; margin: 0 auto; padding: 0 24px;
       display: flex; align-items: center; justify-content: space-between; height: 64px;
     }
-    .nav-logo { display: flex; align-items: center; gap: 12px; }
-    .nav-logo img { height: 48px; mix-blend-mode: lighten; }
+    .nav-logo { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+    .nav-logo img { height: 44px; mix-blend-mode: lighten; }
     .nav-logo span { font-size: 18px; font-weight: 700; }
-    .nav-links { display: flex; align-items: center; gap: 32px; }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
     .nav-links a { color: #94a3b8; font-size: 14px; font-weight: 500; transition: color 0.15s; cursor: pointer; }
     .nav-links a:hover { color: white; }
     .btn-nav {
       background: linear-gradient(to right, var(--blue), var(--cyan));
       color: white; padding: 8px 20px; border-radius: 8px;
-      font-size: 14px; font-weight: 500; border: none; cursor: pointer;
+      font-size: 14px; font-weight: 500; border: none; cursor: pointer; transition: opacity 0.15s;
     }
     .btn-nav:hover { opacity: 0.9; }
 
-    .hero { position: relative; padding: 100px 24px 60px; overflow: hidden; }
-    .hero-bg { position: absolute; inset: 0; background-image: url('public/skyline.webp'); background-size: cover; background-position: center; opacity: 0.12; }
-    .hero-gradient { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(15,23,42,0.4), transparent, #0f172a); }
-    .hero-orb1 { position: absolute; top: 80px; left: 40px; width: 384px; height: 384px; background: rgba(59,130,246,0.2); border-radius: 50%; filter: blur(80px); }
-    .hero-orb2 { position: absolute; top: 120px; right: 40px; width: 320px; height: 320px; background: rgba(6,182,212,0.15); border-radius: 50%; filter: blur(80px); }
-    .hero-inner { max-width: 1280px; margin: 0 auto; position: relative; z-index: 1; text-align: center; }
-    .logo-wrap { position: relative; display: inline-block; margin-bottom: 32px; }
-    .logo-glow { position: absolute; inset: -20px; background: rgba(59,130,246,0.25); border-radius: 50%; filter: blur(60px); }
-    .logo-wrap img { height: 200px; mix-blend-mode: lighten; position: relative; border-radius: 16px; filter: drop-shadow(0 0 24px rgba(59,130,246,0.5)); }
-    h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 700; margin-bottom: 20px; line-height: 1.2; }
+    /* ── Right-side dot nav ── */
+    #dot-nav {
+      position: fixed; right: 24px; top: 50%; transform: translateY(-50%);
+      z-index: 100; display: flex; flex-direction: column; gap: 14px;
+    }
+    .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      border: 2px solid rgba(255,255,255,0.3);
+      cursor: pointer; transition: all 0.25s;
+      position: relative;
+    }
+    .dot:hover { background: rgba(255,255,255,0.5); }
+    .dot.active { background: white; border-color: white; transform: scale(1.3); }
+    .dot .dot-label {
+      position: absolute; right: 22px; top: 50%; transform: translateY(-50%);
+      font-size: 12px; font-weight: 500; color: white;
+      background: rgba(15,23,42,0.8); padding: 3px 8px; border-radius: 4px;
+      white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+    }
+    .dot:hover .dot-label { opacity: 1; }
+
+    /* ── Section inner wrapper ── */
+    .page-inner {
+      flex: 1; display: flex; flex-direction: column; justify-content: center;
+      max-width: 1200px; margin: 0 auto; width: 100%; padding: 80px 48px 40px;
+    }
+
+    /* ── HERO ── */
+    #page-hero { background: #0f172a; }
+    .hero-bg { position: absolute; inset: 0; background-image: url('public/skyline.webp'); background-size: cover; background-position: center; opacity: 0.1; }
+    .hero-gradient { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(15,23,42,0.5), transparent, rgba(15,23,42,0.7)); }
+    .hero-orb1 { position: absolute; top: 10%; left: 5%; width: 350px; height: 350px; background: rgba(59,130,246,0.18); border-radius: 50%; filter: blur(80px); }
+    .hero-orb2 { position: absolute; top: 15%; right: 5%; width: 280px; height: 280px; background: rgba(6,182,212,0.13); border-radius: 50%; filter: blur(80px); }
+    .hero-content { position: relative; z-index: 1; text-align: center; }
+    .logo-wrap { position: relative; display: inline-block; margin-bottom: 24px; }
+    .logo-glow { position: absolute; inset: -20px; background: rgba(59,130,246,0.2); border-radius: 50%; filter: blur(60px); }
+    .logo-wrap img { height: 160px; mix-blend-mode: lighten; position: relative; border-radius: 16px; filter: drop-shadow(0 0 20px rgba(59,130,246,0.4)); }
+    h1 { font-size: clamp(26px, 4vw, 44px); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
     h1 .blue { color: #60a5fa; } h1 .cyan { color: #22d3ee; }
-    .hero-sub { font-size: 18px; color: #94a3b8; max-width: 600px; margin: 0 auto 32px; line-height: 1.6; }
-    .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .hero-sub { font-size: 16px; color: #94a3b8; max-width: 560px; margin: 0 auto 28px; line-height: 1.6; }
+    .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
     .btn-primary {
       background: linear-gradient(to right, var(--blue), var(--cyan));
-      color: white; padding: 14px 32px; border-radius: 10px;
-      font-size: 16px; font-weight: 500; border: none; cursor: pointer;
+      color: white; padding: 12px 28px; border-radius: 10px;
+      font-size: 15px; font-weight: 500; border: none; cursor: pointer;
       display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.15s;
     }
     .btn-primary:hover { opacity: 0.9; }
     .btn-outline {
       background: transparent; border: 1px solid rgba(59,130,246,0.5);
-      color: white; padding: 14px 32px; border-radius: 10px;
-      font-size: 16px; font-weight: 500; cursor: pointer; transition: background 0.15s;
+      color: white; padding: 12px 28px; border-radius: 10px;
+      font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.15s;
     }
     .btn-outline:hover { background: rgba(59,130,246,0.1); }
 
-    .divider { position: relative; }
-    .divider::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; border-top: 1px solid #334155; }
-    .divider-dot { display: flex; justify-content: center; position: relative; }
-    .divider-dot span { width: 12px; height: 12px; border-radius: 50%; display: block; background: var(--bg, #0f172a); border: 2px solid; }
+    /* ── SERVICES ── */
+    #page-services { background: rgba(15,23,42,0.98); border-top: 1px solid #1e293b; }
+    .section-title { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+    .section-sub { color: #94a3b8; margin-bottom: 32px; font-size: 14px; }
+    .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .svc-card { background: rgba(30,41,59,0.6); border: 1px solid #334155; border-radius: 12px; padding: 20px; transition: transform 0.2s, border-color 0.2s; }
+    .svc-card:hover { transform: translateY(-3px); border-color: #475569; }
+    .svc-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+    .svc-icon i { width: 22px; height: 22px; }
+    .svc-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .svc-card p { color: #94a3b8; font-size: 13px; line-height: 1.6; }
 
-    .section { padding: 80px 24px; }
-    .section-inner { max-width: 1280px; margin: 0 auto; }
-    .section-title { font-size: 32px; font-weight: 700; text-align: center; margin-bottom: 12px; }
-    .section-sub { color: #94a3b8; text-align: center; max-width: 500px; margin: 0 auto 48px; }
-
-    .services-section { background: rgba(15,23,42,0.7); border-top: 1px solid #334155; border-bottom: 1px solid #334155; }
-    .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
-    .svc-card { background: rgba(30,41,59,0.5); border: 1px solid #334155; border-radius: 12px; padding: 24px; transition: transform 0.2s; }
-    .svc-card:hover { transform: translateY(-4px); }
-    .svc-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
-    .svc-icon i { width: 24px; height: 24px; }
-    .svc-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
-    .svc-card p { color: #94a3b8; font-size: 14px; line-height: 1.6; }
-
+    /* ── ABOUT ── */
+    #page-about { background: #0f172a; }
     .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
-    .features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 24px; }
+    .features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
     .feat { display: flex; align-items: center; gap: 10px; }
-    .feat i { width: 20px; height: 20px; color: #22d3ee; flex-shrink: 0; }
-    .feat span { color: #cbd5e1; font-size: 14px; }
+    .feat i { width: 18px; height: 18px; color: #22d3ee; flex-shrink: 0; }
+    .feat span { color: #cbd5e1; font-size: 13px; }
     .about-card {
       background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(6,182,212,0.1), rgba(30,41,59,0.5));
-      border: 1px solid rgba(59,130,246,0.3); border-radius: 20px; padding: 48px 32px; text-align: center;
+      border: 1px solid rgba(59,130,246,0.3); border-radius: 20px; padding: 40px 28px; text-align: center;
     }
-    .about-card img { height: 120px; mix-blend-mode: lighten; margin-bottom: 24px; }
-    .about-card h3 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
-    .about-card p { color: #94a3b8; font-size: 14px; }
+    .about-card img { height: 100px; mix-blend-mode: lighten; margin-bottom: 20px; }
+    .about-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+    .about-card p { color: #94a3b8; font-size: 13px; }
 
-    .contact-section { background: rgba(15,23,42,0.7); border-top: 1px solid #334155; border-bottom: 1px solid #334155; }
-    .contact-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; max-width: 800px; margin: 0 auto; }
-    .cta-card { background: rgba(30,41,59,0.5); border: 1px solid #334155; border-radius: 12px; padding: 24px; text-align: center; transition: transform 0.2s; }
-    .cta-card:hover { transform: translateY(-4px); }
-    .cta-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
-    .cta-icon i { width: 24px; height: 24px; }
-    .cta-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
-    .cta-card p { color: #94a3b8; font-size: 14px; }
-
-    .flogo { display: flex; align-items: center; gap: 10px; }
-    .flogo img { height: 32px; mix-blend-mode: lighten; }
-    .flogo span { font-size: 15px; font-weight: 600; }
+    /* ── CONTACT ── */
+    #page-contact { background: rgba(15,23,42,0.98); border-top: 1px solid #1e293b; }
+    .contact-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; max-width: 760px; }
+    .cta-card { background: rgba(30,41,59,0.6); border: 1px solid #334155; border-radius: 12px; padding: 22px; text-align: center; transition: transform 0.2s; }
+    .cta-card:hover { transform: translateY(-3px); }
+    .cta-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
+    .cta-icon i { width: 22px; height: 22px; }
+    .cta-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 5px; }
+    .cta-card p { color: #94a3b8; font-size: 13px; }
+    .flogo { display: flex; align-items: center; gap: 10px; margin-top: 36px; }
+    .flogo img { height: 28px; mix-blend-mode: lighten; }
+    .flogo span { font-size: 14px; font-weight: 600; }
+    .copyright { color: #64748b; font-size: 12px; margin-top: 8px; }
 
     @media (max-width: 1024px) { .services-grid { grid-template-columns: repeat(2,1fr); } }
-    @media (max-width: 768px) { .nav-links { display: none; } .services-grid, .contact-grid, .about-grid, .features-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .services-grid, .contact-grid, .about-grid, .features-grid { grid-template-columns: 1fr; }
+      .page-inner { padding: 80px 20px 20px; }
+      #dot-nav { display: none; }
+    }
   </style>
 </head>
 <body>
+
+<!-- TOP NAV -->
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">
+    <div class="nav-logo" onclick="goTo(0)">
       <img src="public/logo.png" alt="Theomie Properties" />
       <span>Theomie Properties Ltd</span>
-    </a>
+    </div>
     <div class="nav-links">
-      <a onclick="scrollTo('services')">Services</a>
-      <a onclick="scrollTo('about')">About</a>
-      <a onclick="scrollTo('contact')">Contact</a>
-      <a href="#contact" onclick="event.preventDefault();scrollTo('contact')"><button class="btn-nav">Get in Touch</button></a>
+      <a onclick="goTo(0)">Home</a>
+      <a onclick="goTo(1)">Services</a>
+      <a onclick="goTo(2)">About</a>
+      <a onclick="goTo(3)">Contact</a>
+      <button class="btn-nav" onclick="goTo(3)">Get in Touch</button>
     </div>
   </div>
 </nav>
 
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-gradient"></div>
-  <div class="hero-orb1"></div>
-  <div class="hero-orb2"></div>
-  <div class="hero-inner">
-    <div class="logo-wrap">
-      <div class="logo-glow"></div>
-      <img src="public/logo.png" alt="Theomie Properties" />
-    </div>
-    <h1>Professional <span class="blue">Property</span><span class="cyan"> Management</span></h1>
-    <p class="hero-sub">Trusted property management services delivering exceptional care for landlords and tenants alike. Your property is in safe hands with Theomie Properties Ltd.</p>
-    <div class="hero-btns">
-      <a href="#contact" onclick="event.preventDefault();scrollTo('contact')">
-        <button class="btn-primary">Get in Touch <i data-lucide="arrow-right" style="width:20px;height:20px"></i></button>
-      </a>
-      <button class="btn-outline" onclick="scrollTo('services')">Our Services</button>
-    </div>
-  </div>
-</section>
+<!-- RIGHT DOT NAV -->
+<div id="dot-nav">
+  <div class="dot active" onclick="goTo(0)"><span class="dot-label">Home</span></div>
+  <div class="dot" onclick="goTo(1)"><span class="dot-label">Services</span></div>
+  <div class="dot" onclick="goTo(2)"><span class="dot-label">About</span></div>
+  <div class="dot" onclick="goTo(3)"><span class="dot-label">Contact</span></div>
+</div>
 
-<div class="divider" style="background:#0f172a"><div class="divider-dot"><span style="border-color:#3b82f6"></span></div></div>
+<!-- SCROLL CONTAINER -->
+<div id="scroll-container">
 
-<section class="section services-section" id="services">
-  <div class="section-inner">
-    <h2 class="section-title">Our Services</h2>
-    <p class="section-sub">Comprehensive property management solutions tailored to your needs</p>
-    <div class="services-grid">
-      <div class="svc-card">
-        <div class="svc-icon" style="background:rgba(59,130,246,0.1);color:#60a5fa"><i data-lucide="home"></i></div>
-        <h3>Property Management</h3>
-        <p>Full-service property management including tenant screening, rent collection, and maintenance coordination.</p>
-      </div>
-      <div class="svc-card">
-        <div class="svc-icon" style="background:rgba(6,182,212,0.1);color:#22d3ee"><i data-lucide="key"></i></div>
-        <h3>Rental Properties</h3>
-        <p>Quality residential properties available for rent across prime locations.</p>
-      </div>
-      <div class="svc-card">
-        <div class="svc-icon" style="background:rgba(168,85,247,0.1);color:#c084fc"><i data-lucide="wrench"></i></div>
-        <h3>Investment Advisory</h3>
-        <p>Expert guidance on property investments to help grow your portfolio and maximise returns.</p>
-      </div>
-      <div class="svc-card">
-        <div class="svc-icon" style="background:rgba(16,185,129,0.1);color:#34d399"><i data-lucide="shield"></i></div>
-        <h3>Tenant Services</h3>
-        <p>Dedicated support for our tenants with easy communication and quick response times.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider" style="background:#0f172a"><div class="divider-dot"><span style="border-color:#06b6d4"></span></div></div>
-
-<section class="section" id="about">
-  <div class="section-inner">
-    <div class="about-grid">
-      <div>
-        <h2 style="font-size:28px;font-weight:700;margin-bottom:16px">Why Choose Theomie Properties?</h2>
-        <p style="color:#94a3b8;line-height:1.7">With years of experience in property management, we understand what it takes to maintain properties to the highest standards while ensuring tenant satisfaction. Our dedicated team works tirelessly to protect your investment and provide exceptional service.</p>
-        <div class="features-grid">
-          <div class="feat"><i data-lucide="check-circle"></i><span>Professional property management</span></div>
-          <div class="feat"><i data-lucide="check-circle"></i><span>Transparent pricing</span></div>
-          <div class="feat"><i data-lucide="check-circle"></i><span>24/7 emergency support</span></div>
-          <div class="feat"><i data-lucide="check-circle"></i><span>Regular property inspections</span></div>
-          <div class="feat"><i data-lucide="check-circle"></i><span>Online rent payments</span></div>
-          <div class="feat"><i data-lucide="check-circle"></i><span>Quick maintenance response</span></div>
+  <!-- PAGE 1: HERO -->
+  <div class="page" id="page-hero">
+    <div class="hero-bg"></div>
+    <div class="hero-gradient"></div>
+    <div class="hero-orb1"></div>
+    <div class="hero-orb2"></div>
+    <div class="page-inner">
+      <div class="hero-content">
+        <div class="logo-wrap">
+          <div class="logo-glow"></div>
+          <img src="public/logo.png" alt="Theomie Properties" />
+        </div>
+        <h1>Professional <span class="blue">Property</span><span class="cyan"> Management</span></h1>
+        <p class="hero-sub">Trusted property management services delivering exceptional care for landlords and tenants alike. Your property is in safe hands with Theomie Properties Ltd.</p>
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="goTo(3)">Get in Touch <i data-lucide="arrow-right" style="width:18px;height:18px"></i></button>
+          <button class="btn-outline" onclick="goTo(1)">Our Services</button>
         </div>
       </div>
-      <div class="about-card">
-        <img src="public/logo.png" alt="Theomie Properties" />
-        <h3>Theomie Properties Ltd</h3>
-        <p>Professional Property Management</p>
+    </div>
+  </div>
+
+  <!-- PAGE 2: SERVICES -->
+  <div class="page" id="page-services">
+    <div class="page-inner">
+      <h2 class="section-title">Our Services</h2>
+      <p class="section-sub">Comprehensive property management solutions tailored to your needs</p>
+      <div class="services-grid">
+        <div class="svc-card">
+          <div class="svc-icon" style="background:rgba(59,130,246,0.1);color:#60a5fa"><i data-lucide="home"></i></div>
+          <h3>Property Management</h3>
+          <p>Full-service management including tenant screening, rent collection, and maintenance coordination.</p>
+        </div>
+        <div class="svc-card">
+          <div class="svc-icon" style="background:rgba(6,182,212,0.1);color:#22d3ee"><i data-lucide="key"></i></div>
+          <h3>Rental Properties</h3>
+          <p>Quality residential properties available for rent across prime locations.</p>
+        </div>
+        <div class="svc-card">
+          <div class="svc-icon" style="background:rgba(168,85,247,0.1);color:#c084fc"><i data-lucide="trending-up"></i></div>
+          <h3>Investment Advisory</h3>
+          <p>Expert guidance on property investments to grow your portfolio and maximise returns.</p>
+        </div>
+        <div class="svc-card">
+          <div class="svc-icon" style="background:rgba(16,185,129,0.1);color:#34d399"><i data-lucide="shield"></i></div>
+          <h3>Tenant Services</h3>
+          <p>Dedicated support for our tenants with easy communication and quick response times.</p>
+        </div>
       </div>
     </div>
   </div>
-</section>
 
-<div class="divider" style="background:#0f172a"><div class="divider-dot"><span style="border-color:#a855f7"></span></div></div>
-
-<section class="section contact-section" id="contact">
-  <div class="section-inner">
-    <h2 class="section-title">Get in Touch</h2>
-    <p class="section-sub">Ready to discuss your property management needs? Contact us today.</p>
-    <div class="contact-grid">
-      <div class="cta-card">
-        <div class="cta-icon" style="background:rgba(59,130,246,0.1);color:#60a5fa"><i data-lucide="phone"></i></div>
-        <h3>Phone</h3><p>Contact us for enquiries</p>
-      </div>
-      <div class="cta-card">
-        <div class="cta-icon" style="background:rgba(6,182,212,0.1);color:#22d3ee"><i data-lucide="mail"></i></div>
-        <h3>Email</h3><p>info@theomieproperties.com</p>
-      </div>
-      <div class="cta-card">
-        <div class="cta-icon" style="background:rgba(168,85,247,0.1);color:#c084fc"><i data-lucide="map-pin"></i></div>
-        <h3>Location</h3><p>United Kingdom</p>
+  <!-- PAGE 3: ABOUT -->
+  <div class="page" id="page-about">
+    <div class="page-inner">
+      <div class="about-grid">
+        <div>
+          <h2 style="font-size:26px;font-weight:700;margin-bottom:14px">Why Choose Theomie Properties?</h2>
+          <p style="color:#94a3b8;line-height:1.7;font-size:14px">With years of experience in property management, we understand what it takes to maintain properties to the highest standards while ensuring tenant satisfaction. Our dedicated team works tirelessly to protect your investment.</p>
+          <div class="features-grid">
+            <div class="feat"><i data-lucide="check-circle"></i><span>Professional management</span></div>
+            <div class="feat"><i data-lucide="check-circle"></i><span>Transparent pricing</span></div>
+            <div class="feat"><i data-lucide="check-circle"></i><span>24/7 emergency support</span></div>
+            <div class="feat"><i data-lucide="check-circle"></i><span>Property inspections</span></div>
+            <div class="feat"><i data-lucide="check-circle"></i><span>Online rent payments</span></div>
+            <div class="feat"><i data-lucide="check-circle"></i><span>Quick maintenance response</span></div>
+          </div>
+        </div>
+        <div class="about-card">
+          <img src="public/logo.png" alt="Theomie Properties" />
+          <h3>Theomie Properties Ltd</h3>
+          <p>Professional Property Management</p>
+        </div>
       </div>
     </div>
-    <div style="margin-top:48px;border-top:1px solid #1e293b;padding-top:32px">
-      <div class="flogo" style="margin-bottom:10px">
+  </div>
+
+  <!-- PAGE 4: CONTACT -->
+  <div class="page" id="page-contact">
+    <div class="page-inner">
+      <h2 class="section-title">Get in Touch</h2>
+      <p class="section-sub">Ready to discuss your property management needs? Contact us today.</p>
+      <div class="contact-grid">
+        <div class="cta-card">
+          <div class="cta-icon" style="background:rgba(59,130,246,0.1);color:#60a5fa"><i data-lucide="phone"></i></div>
+          <h3>Phone</h3><p>+44 7725 712571</p>
+        </div>
+        <div class="cta-card">
+          <div class="cta-icon" style="background:rgba(6,182,212,0.1);color:#22d3ee"><i data-lucide="mail"></i></div>
+          <h3>Email</h3><p>info@theomieproperties.com</p>
+        </div>
+        <div class="cta-card">
+          <div class="cta-icon" style="background:rgba(168,85,247,0.1);color:#c084fc"><i data-lucide="map-pin"></i></div>
+          <h3>Location</h3><p>United Kingdom</p>
+        </div>
+      </div>
+      <div class="flogo">
         <img src="public/logo.png" alt="Theomie Properties" />
         <span>Theomie Properties Ltd</span>
       </div>
-      <p style="color:#64748b;font-size:13px">&copy; <span id="yr"></span> Theomie Properties Ltd. All rights reserved.</p>
+      <p class="copyright">&copy; <span id="yr"></span> Theomie Properties Ltd. All rights reserved.</p>
     </div>
   </div>
-</section>
+
+</div><!-- end scroll-container -->
 
 <script>
-lucide.createIcons();
-document.getElementById('yr').textContent = new Date().getFullYear();
-function scrollTo(id) { document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'center'}); }
+  lucide.createIcons();
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  const container = document.getElementById('scroll-container');
+  const pages = document.querySelectorAll('.page');
+  const dots = document.querySelectorAll('.dot');
+
+  function goTo(index) {
+    pages[index].scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function updateDots() {
+    const scrollTop = container.scrollTop;
+    const height = container.clientHeight;
+    const current = Math.round(scrollTop / height);
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+
+  container.addEventListener('scroll', updateDots, { passive: true });
 </script>
 </body>
 </html>
