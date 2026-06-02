@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Theomie Properties Ltd - Professional Property Management" />
-  <title>Theomie Properties</title>
+  <title>Theomie</title>
   <link rel="icon" href="public/favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,6 +16,7 @@
     body { font-family: 'Inter', sans-serif; background: #0f172a; color: #f8fafc; -webkit-font-smoothing: antialiased; overflow: hidden; }
     a { text-decoration: none; color: inherit; }
 
+    /* ── Full-page scroll container ── */
     #scroll-container {
       height: 100vh;
       overflow-y: scroll;
@@ -32,6 +33,7 @@
       flex-direction: column;
     }
 
+    /* ── Top nav ── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       background: rgba(15,23,42,0.85); backdrop-filter: blur(12px);
@@ -54,9 +56,10 @@
     }
     .btn-nav:hover { opacity: 0.9; }
 
+    /* ── Right-side nav ── */
     #dot-nav {
-      position: fixed; right: 16px; top: 50%; transform: translateY(-50%);
-      z-index: 100; display: flex; flex-direction: column; gap: 6px;
+      position: fixed; right: 20px; top: 50%; transform: translateY(-50%);
+      z-index: 100; display: flex; flex-direction: column; gap: 8px;
     }
     .dot {
       display: flex; align-items: center; gap: 6px;
@@ -78,15 +81,18 @@
     }
     .dot.active .dot-pip { background: #60a5fa; }
 
+    /* ── Section inner wrapper ── */
     .page-inner {
       flex: 1; display: flex; flex-direction: column; justify-content: center;
       max-width: 1200px; margin: 0 auto; width: 100%; padding: 80px 48px 40px;
     }
 
-    /* HERO */
+    /* ── HERO ── */
     #page-hero { background: #0f172a; }
     .hero-bg { position: absolute; inset: 0; background-image: url('public/skyline.webp'); background-size: cover; background-position: center; opacity: 0.1; }
     .hero-gradient { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(15,23,42,0.5), transparent, rgba(15,23,42,0.7)); }
+
+    /* Floating orbs */
     .hero-orb1 {
       position: absolute; top: 10%; left: 5%; width: 350px; height: 350px;
       background: rgba(59,130,246,0.18); border-radius: 50%; filter: blur(80px);
@@ -116,6 +122,8 @@
       0%,100% { transform: translate(0,0) scale(1); }
       50% { transform: translate(30px,-50px) scale(1.1); }
     }
+
+    /* Hero content entrance animations */
     .hero-content { position: relative; z-index: 1; text-align: center; }
     .logo-wrap {
       position: relative; display: inline-block; margin-bottom: 24px;
@@ -156,6 +164,7 @@
       from { opacity: 0; transform: translateY(28px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
     .btn-primary {
       background: linear-gradient(to right, var(--blue), var(--cyan));
       color: white; padding: 12px 28px; border-radius: 10px;
@@ -170,7 +179,7 @@
     }
     .btn-outline:hover { background: rgba(59,130,246,0.1); transform: translateY(-2px); }
 
-    /* SERVICES */
+    /* ── SERVICES ── */
     #page-services { background: rgba(15,23,42,0.98); border-top: 1px solid #1e293b; }
     .section-title { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
     .section-sub { color: #94a3b8; margin-bottom: 32px; font-size: 14px; }
@@ -182,7 +191,7 @@
     .svc-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
     .svc-card p { color: #94a3b8; font-size: 13px; line-height: 1.6; }
 
-    /* ABOUT */
+    /* ── ABOUT ── */
     #page-about { background: #0f172a; }
     .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
     .features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
@@ -197,9 +206,9 @@
     .about-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
     .about-card p { color: #94a3b8; font-size: 13px; }
 
-    /* CONTACT */
+    /* ── CONTACT ── */
     #page-contact { background: rgba(15,23,42,0.98); border-top: 1px solid #1e293b; }
-    #page-contact .page-inner { align-items: center; text-align: center; }
+    #page-contact .page-inner { align-items: center; text-align: center; width: 100%; }
     #page-contact .section-title, #page-contact .section-sub { text-align: center; width: 100%; }
     .contact-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; max-width: 760px; width: 100%; }
     .cta-card { background: rgba(30,41,59,0.6); border: 1px solid #334155; border-radius: 12px; padding: 22px; text-align: center; transition: transform 0.2s; }
@@ -224,6 +233,7 @@
 </head>
 <body>
 
+<!-- TOP NAV -->
 <nav>
   <div class="nav-inner">
     <div class="nav-logo" onclick="goTo(0)">
@@ -239,6 +249,7 @@
   </div>
 </nav>
 
+<!-- RIGHT DOT NAV -->
 <div id="dot-nav">
   <div class="dot active" onclick="goTo(0)"><span class="dot-pip"></span>Home</div>
   <div class="dot" onclick="goTo(1)"><span class="dot-pip"></span>Services</div>
@@ -246,8 +257,10 @@
   <div class="dot" onclick="goTo(3)"><span class="dot-pip"></span>Contact</div>
 </div>
 
+<!-- SCROLL CONTAINER -->
 <div id="scroll-container">
 
+  <!-- PAGE 1: HERO -->
   <div class="page" id="page-hero">
     <div class="hero-bg"></div>
     <div class="hero-gradient"></div>
@@ -270,6 +283,7 @@
     </div>
   </div>
 
+  <!-- PAGE 2: SERVICES -->
   <div class="page" id="page-services">
     <div class="page-inner">
       <h2 class="section-title">Our Services</h2>
@@ -299,6 +313,7 @@
     </div>
   </div>
 
+  <!-- PAGE 3: ABOUT -->
   <div class="page" id="page-about">
     <div class="page-inner">
       <div class="about-grid">
@@ -323,6 +338,7 @@
     </div>
   </div>
 
+  <!-- PAGE 4: CONTACT -->
   <div class="page" id="page-contact">
     <div class="page-inner">
       <h2 class="section-title">Get in Touch</h2>
@@ -349,7 +365,7 @@
     </div>
   </div>
 
-</div>
+</div><!-- end scroll-container -->
 
 <script>
   lucide.createIcons();
