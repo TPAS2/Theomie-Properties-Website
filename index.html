@@ -88,29 +88,109 @@
     #page-hero { background: #0f172a; }
     .hero-bg { position: absolute; inset: 0; background-image: url('public/skyline.webp'); background-size: cover; background-position: center; opacity: 0.1; }
     .hero-gradient { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(15,23,42,0.5), transparent, rgba(15,23,42,0.7)); }
-    .hero-orb1 { position: absolute; top: 10%; left: 5%; width: 350px; height: 350px; background: rgba(59,130,246,0.18); border-radius: 50%; filter: blur(80px); }
-    .hero-orb2 { position: absolute; top: 15%; right: 5%; width: 280px; height: 280px; background: rgba(6,182,212,0.13); border-radius: 50%; filter: blur(80px); }
+
+    /* Floating orbs */
+    .hero-orb1 {
+      position: absolute; top: 10%; left: 5%; width: 350px; height: 350px;
+      background: rgba(59,130,246,0.18); border-radius: 50%; filter: blur(80px);
+      animation: orbFloat1 8s ease-in-out infinite;
+    }
+    .hero-orb2 {
+      position: absolute; top: 15%; right: 5%; width: 280px; height: 280px;
+      background: rgba(6,182,212,0.13); border-radius: 50%; filter: blur(80px);
+      animation: orbFloat2 10s ease-in-out infinite;
+    }
+    .hero-orb3 {
+      position: absolute; bottom: 15%; left: 35%; width: 220px; height: 220px;
+      background: rgba(168,85,247,0.1); border-radius: 50%; filter: blur(80px);
+      animation: orbFloat3 12s ease-in-out infinite;
+    }
+    @keyframes orbFloat1 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33% { transform: translate(40px,-30px) scale(1.08); }
+      66% { transform: translate(-20px,20px) scale(0.95); }
+    }
+    @keyframes orbFloat2 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33% { transform: translate(-50px,25px) scale(1.05); }
+      66% { transform: translate(30px,-40px) scale(0.92); }
+    }
+    @keyframes orbFloat3 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(30px,-50px) scale(1.1); }
+    }
+
+    /* Hero content entrance animations */
     .hero-content { position: relative; z-index: 1; text-align: center; }
-    .logo-wrap { position: relative; display: inline-block; margin-bottom: 24px; }
-    .logo-glow { position: absolute; inset: -20px; background: rgba(59,130,246,0.2); border-radius: 50%; filter: blur(60px); }
-    .logo-wrap img { height: 160px; mix-blend-mode: lighten; position: relative; border-radius: 16px; filter: drop-shadow(0 0 20px rgba(59,130,246,0.4)); }
-    h1 { font-size: clamp(26px, 4vw, 44px); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
+    .logo-wrap {
+      position: relative; display: inline-block; margin-bottom: 24px;
+      animation: heroFadeUp 0.8s ease both;
+    }
+    .logo-glow {
+      position: absolute; inset: -20px; background: rgba(59,130,246,0.2);
+      border-radius: 50%; filter: blur(60px);
+      animation: glowPulse 3s ease-in-out infinite;
+    }
+    @keyframes glowPulse {
+      0%,100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.15); }
+    }
+    .logo-wrap img {
+      height: 160px; mix-blend-mode: lighten; position: relative; border-radius: 16px;
+      filter: drop-shadow(0 0 20px rgba(59,130,246,0.4));
+      animation: logoFloat 4s ease-in-out infinite;
+    }
+    @keyframes logoFloat {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    h1 {
+      font-size: clamp(26px, 4vw, 44px); font-weight: 700; margin-bottom: 16px; line-height: 1.2;
+      animation: heroFadeUp 0.8s 0.2s ease both;
+    }
     h1 .blue { color: #60a5fa; } h1 .cyan { color: #22d3ee; }
-    .hero-sub { font-size: 16px; color: #94a3b8; max-width: 560px; margin: 0 auto 28px; line-height: 1.6; }
-    .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .hero-sub {
+      font-size: 16px; color: #94a3b8; max-width: 560px; margin: 0 auto 28px; line-height: 1.6;
+      animation: heroFadeUp 0.8s 0.4s ease both;
+    }
+    .hero-btns {
+      display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+      animation: heroFadeUp 0.8s 0.6s ease both;
+    }
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Animated grid lines background */
+    #page-hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridDrift 20s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes gridDrift {
+      from { background-position: 0 0; }
+      to { background-position: 60px 60px; }
+    }
+
     .btn-primary {
       background: linear-gradient(to right, var(--blue), var(--cyan));
       color: white; padding: 12px 28px; border-radius: 10px;
       font-size: 15px; font-weight: 500; border: none; cursor: pointer;
-      display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.15s;
+      display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.15s, transform 0.15s;
     }
-    .btn-primary:hover { opacity: 0.9; }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); }
     .btn-outline {
       background: transparent; border: 1px solid rgba(59,130,246,0.5);
       color: white; padding: 12px 28px; border-radius: 10px;
-      font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.15s;
+      font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.15s, transform 0.15s;
     }
-    .btn-outline:hover { background: rgba(59,130,246,0.1); }
+    .btn-outline:hover { background: rgba(59,130,246,0.1); transform: translateY(-2px); }
 
     /* ── SERVICES ── */
     #page-services { background: rgba(15,23,42,0.98); border-top: 1px solid #1e293b; }
@@ -198,6 +278,7 @@
     <div class="hero-gradient"></div>
     <div class="hero-orb1"></div>
     <div class="hero-orb2"></div>
+    <div class="hero-orb3"></div>
     <div class="page-inner">
       <div class="hero-content">
         <div class="logo-wrap">
