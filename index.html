@@ -65,6 +65,11 @@
     }
     .btn-outline:hover { background: rgba(59,130,246,0.1); }
 
+    .divider { position: relative; }
+    .divider::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; border-top: 1px solid #334155; }
+    .divider-dot { display: flex; justify-content: center; position: relative; }
+    .divider-dot span { width: 12px; height: 12px; border-radius: 50%; display: block; background: var(--bg, #0f172a); border: 2px solid; }
+
     .section { padding: 80px 24px; }
     .section-inner { max-width: 1280px; margin: 0 auto; }
     .section-title { font-size: 32px; font-weight: 700; text-align: center; margin-bottom: 12px; }
@@ -101,12 +106,9 @@
     .cta-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
     .cta-card p { color: #94a3b8; font-size: 14px; }
 
-    footer { padding: 32px 24px; border-top: 1px solid #334155; }
-    .footer-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
     .flogo { display: flex; align-items: center; gap: 10px; }
     .flogo img { height: 32px; mix-blend-mode: lighten; }
     .flogo span { font-size: 15px; font-weight: 600; }
-    footer p { color: #64748b; font-size: 13px; }
 
     @media (max-width: 1024px) { .services-grid { grid-template-columns: repeat(2,1fr); } }
     @media (max-width: 768px) { .nav-links { display: none; } .services-grid, .contact-grid, .about-grid, .features-grid { grid-template-columns: 1fr; } }
@@ -149,6 +151,8 @@
   </div>
 </section>
 
+<div class="divider" style="background:#0f172a"><div class="divider-dot"><span style="border-color:#3b82f6"></span></div></div>
+
 <section class="section services-section" id="services">
   <div class="section-inner">
     <h2 class="section-title">Our Services</h2>
@@ -178,12 +182,14 @@
   </div>
 </section>
 
+<div class="divider" style="background:#0f172a"><div class="divider-dot"><span style="border-color:#06b6d4"></span></div></div>
+
 <section class="section" id="about">
   <div class="section-inner">
     <div class="about-grid">
       <div>
         <h2 style="font-size:28px;font-weight:700;margin-bottom:16px">Why Choose Theomie Properties?</h2>
-        <p style="color:#94a3b8;line-height:1.7">With years of experience in property management, we understand what it takes to maintain properties to the highest standards while ensuring tenant satisfaction.</p>
+        <p style="color:#94a3b8;line-height:1.7">With years of experience in property management, we understand what it takes to maintain properties to the highest standards while ensuring tenant satisfaction. Our dedicated team works tirelessly to protect your investment and provide exceptional service.</p>
         <div class="features-grid">
           <div class="feat"><i data-lucide="check-circle"></i><span>Professional property management</span></div>
           <div class="feat"><i data-lucide="check-circle"></i><span>Transparent pricing</span></div>
@@ -201,6 +207,8 @@
     </div>
   </div>
 </section>
+
+<div class="divider" style="background:#0f172a"><div class="divider-dot"><span style="border-color:#a855f7"></span></div></div>
 
 <section class="section contact-section" id="contact">
   <div class="section-inner">
@@ -220,18 +228,15 @@
         <h3>Location</h3><p>United Kingdom</p>
       </div>
     </div>
+    <div style="margin-top:48px;border-top:1px solid #1e293b;padding-top:32px">
+      <div class="flogo" style="margin-bottom:10px">
+        <img src="public/logo.png" alt="Theomie Properties" />
+        <span>Theomie Properties Ltd</span>
+      </div>
+      <p style="color:#64748b;font-size:13px">&copy; <span id="yr"></span> Theomie Properties Ltd. All rights reserved.</p>
+    </div>
   </div>
 </section>
-
-<footer>
-  <div class="footer-inner">
-    <div class="flogo">
-      <img src="public/logo.png" alt="Theomie Properties" />
-      <span>Theomie Properties Ltd</span>
-    </div>
-    <p>&copy; <span id="yr"></span> Theomie Properties Ltd. All rights reserved.</p>
-  </div>
-</footer>
 
 <script>
 lucide.createIcons();
