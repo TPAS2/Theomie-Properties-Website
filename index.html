@@ -165,22 +165,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Animated grid lines background */
-    #page-hero::after {
-      content: '';
-      position: absolute; inset: 0;
-      background-image:
-        linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
-      background-size: 60px 60px;
-      animation: gridDrift 20s linear infinite;
-      pointer-events: none;
-    }
-    @keyframes gridDrift {
-      from { background-position: 0 0; }
-      to { background-position: 60px 60px; }
-    }
-
     .btn-primary {
       background: linear-gradient(to right, var(--blue), var(--cyan));
       color: white; padding: 12px 28px; border-radius: 10px;
@@ -224,14 +208,15 @@
 
     /* ── CONTACT ── */
     #page-contact { background: rgba(15,23,42,0.98); border-top: 1px solid #1e293b; }
-    .contact-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; max-width: 760px; }
+    #page-contact .page-inner { align-items: center; text-align: center; }
+    .contact-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; max-width: 760px; width: 100%; }
     .cta-card { background: rgba(30,41,59,0.6); border: 1px solid #334155; border-radius: 12px; padding: 22px; text-align: center; transition: transform 0.2s; }
     .cta-card:hover { transform: translateY(-3px); }
     .cta-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
     .cta-icon i { width: 22px; height: 22px; }
     .cta-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 5px; }
     .cta-card p { color: #94a3b8; font-size: 13px; }
-    .flogo { display: flex; align-items: center; gap: 10px; margin-top: 36px; }
+    .flogo { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 36px; }
     .flogo img { height: 28px; mix-blend-mode: lighten; }
     .flogo span { font-size: 14px; font-weight: 600; }
     .copyright { color: #64748b; font-size: 12px; margin-top: 8px; }
@@ -258,7 +243,6 @@
       <a onclick="goTo(0)">Home</a>
       <a onclick="goTo(1)">Services</a>
       <a onclick="goTo(2)">About</a>
-      <a onclick="goTo(3)">Contact</a>
       <button class="btn-nav" onclick="goTo(3)">Get in Touch</button>
     </div>
   </div>
