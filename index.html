@@ -13,6 +13,67 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* ─── INTRO ─── */
+    #intro {
+      position: fixed; inset: 0; z-index: 500;
+      background: var(--navy, #0C1420);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      transition: opacity 0.5s ease;
+    }
+    #intro.fade-out { opacity: 0; pointer-events: none; }
+
+    #house-wrap {
+      position: relative;
+      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+      transform-origin: 50% 68%;
+      animation: houseIn 0.9s ease both;
+    }
+    #house-wrap.zoom-in {
+      transform: scale(22);
+      opacity: 0;
+    }
+    @keyframes houseIn {
+      from { opacity: 0; transform: scale(0.85) translateY(30px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    #house-svg {
+      width: min(340px, 80vw);
+      height: auto;
+      display: block;
+    }
+
+    .intro-glow {
+      position: absolute;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 65%);
+      border-radius: 50%;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      animation: glowPulse2 3s ease-in-out infinite;
+    }
+    @keyframes glowPulse2 {
+      0%,100% { opacity: 0.6; transform: translate(-50%,-50%) scale(1); }
+      50%      { opacity: 1;   transform: translate(-50%,-50%) scale(1.1); }
+    }
+
+    #intro-prompt {
+      position: absolute; bottom: 48px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: rgba(201,168,76,0.7);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+      animation: promptBob 2s ease-in-out infinite;
+      transition: opacity 0.3s;
+    }
+    #intro-prompt svg { width: 18px; height: 18px; stroke: rgba(201,168,76,0.7); }
+    @keyframes promptBob {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(-6px); }
+    }
+
     :root {
       --navy:    #0C1420;
       --navy-2:  #131D2E;
@@ -448,6 +509,63 @@
 </head>
 <body>
 
+<!-- INTRO -->
+<div id="intro">
+  <div class="intro-glow"></div>
+  <div id="house-wrap">
+    <svg id="house-svg" viewBox="0 0 400 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Ground -->
+      <line x1="20" y1="308" x2="380" y2="308" stroke="rgba(201,168,76,0.2)" stroke-width="1.5"/>
+      <!-- Chimney -->
+      <rect x="278" y="62" width="26" height="58" fill="#1A2538" stroke="rgba(201,168,76,0.5)" stroke-width="1.5"/>
+      <!-- Chimney cap -->
+      <rect x="272" y="60" width="38" height="6" rx="1" fill="#C9A84C" opacity="0.7"/>
+      <!-- Smoke dots -->
+      <circle cx="291" cy="48" r="3" fill="rgba(201,168,76,0.2)"/>
+      <circle cx="298" cy="36" r="4.5" fill="rgba(201,168,76,0.12)"/>
+      <circle cx="287" cy="26" r="3.5" fill="rgba(201,168,76,0.08)"/>
+      <!-- Roof -->
+      <polygon points="200,38 28,162 372,162" fill="#1A2538" stroke="rgba(201,168,76,0.6)" stroke-width="2" stroke-linejoin="round"/>
+      <!-- Roof ridge line -->
+      <line x1="200" y1="38" x2="200" y2="162" stroke="rgba(201,168,76,0.15)" stroke-width="1"/>
+      <!-- House body -->
+      <rect x="55" y="158" width="290" height="150" fill="#131D2E" stroke="rgba(201,168,76,0.4)" stroke-width="1.5"/>
+      <!-- Left window -->
+      <rect x="82" y="187" width="68" height="52" rx="2" fill="#0C1420" stroke="rgba(201,168,76,0.5)" stroke-width="1.5"/>
+      <line x1="116" y1="187" x2="116" y2="239" stroke="rgba(201,168,76,0.25)" stroke-width="1"/>
+      <line x1="82" y1="213" x2="150" y2="213" stroke="rgba(201,168,76,0.25)" stroke-width="1"/>
+      <rect x="82" y="187" width="68" height="52" rx="2" fill="rgba(201,168,76,0.04)"/>
+      <!-- Right window -->
+      <rect x="250" y="187" width="68" height="52" rx="2" fill="#0C1420" stroke="rgba(201,168,76,0.5)" stroke-width="1.5"/>
+      <line x1="284" y1="187" x2="284" y2="239" stroke="rgba(201,168,76,0.25)" stroke-width="1"/>
+      <line x1="250" y1="213" x2="318" y2="213" stroke="rgba(201,168,76,0.25)" stroke-width="1"/>
+      <rect x="250" y="187" width="68" height="52" rx="2" fill="rgba(201,168,76,0.04)"/>
+      <!-- Door frame -->
+      <rect x="162" y="218" width="76" height="90" rx="2" fill="#0C1420" stroke="rgba(201,168,76,0.7)" stroke-width="2"/>
+      <!-- Door arch -->
+      <path d="M162,230 Q200,208 238,230" stroke="rgba(201,168,76,0.5)" stroke-width="1.5" fill="none"/>
+      <!-- Door panel lines -->
+      <rect x="170" y="228" width="26" height="34" rx="1" fill="none" stroke="rgba(201,168,76,0.25)" stroke-width="1"/>
+      <rect x="204" y="228" width="26" height="34" rx="1" fill="none" stroke="rgba(201,168,76,0.25)" stroke-width="1"/>
+      <!-- Door knob -->
+      <circle cx="231" cy="268" r="4" fill="rgba(201,168,76,0.8)"/>
+      <!-- Door step -->
+      <rect x="148" y="305" width="104" height="6" rx="1" fill="rgba(201,168,76,0.3)"/>
+      <!-- Roof tile lines -->
+      <line x1="200" y1="100" x2="110" y2="162" stroke="rgba(201,168,76,0.08)" stroke-width="1"/>
+      <line x1="200" y1="100" x2="290" y2="162" stroke="rgba(201,168,76,0.08)" stroke-width="1"/>
+      <line x1="200" y1="70" x2="68" y2="162" stroke="rgba(201,168,76,0.06)" stroke-width="1"/>
+      <line x1="200" y1="70" x2="332" y2="162" stroke="rgba(201,168,76,0.06)" stroke-width="1"/>
+    </svg>
+  </div>
+  <div id="intro-prompt">
+    <span>Scroll to enter</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </div>
+</div>
+
 <!-- NAV -->
 <nav>
   <div class="nav-inner">
@@ -601,6 +719,32 @@
 <script>
   lucide.createIcons();
   document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // ── Intro animation ──
+  const intro = document.getElementById('intro');
+  const houseWrap = document.getElementById('house-wrap');
+  const prompt = document.getElementById('intro-prompt');
+  let entered = false;
+
+  function enterSite() {
+    if (entered) return;
+    entered = true;
+    prompt.style.opacity = '0';
+    houseWrap.classList.add('zoom-in');
+    setTimeout(() => {
+      intro.classList.add('fade-out');
+      setTimeout(() => { intro.style.display = 'none'; }, 500);
+    }, 400);
+  }
+
+  intro.addEventListener('wheel', (e) => { if (e.deltaY > 0 || e.deltaY < 0) enterSite(); }, { passive: true });
+  intro.addEventListener('click', enterSite);
+
+  let touchStartY = 0;
+  intro.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; }, { passive: true });
+  intro.addEventListener('touchend', (e) => {
+    if (touchStartY - e.changedTouches[0].clientY > 30) enterSite();
+  }, { passive: true });
 
   const container = document.getElementById('scroll-container');
   const pages = document.querySelectorAll('.page');
