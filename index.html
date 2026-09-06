@@ -33,6 +33,7 @@
       animation: houseIn 1s ease both;
       will-change: transform, filter;
     }
+    /* zoom toward door — image darkens as you "pass through" into the interior */
     #house-img.zoom-in {
       transform: scale(14);
       filter: brightness(0) blur(0px);
@@ -42,6 +43,7 @@
       to   { opacity: 1; transform: scale(1); }
     }
 
+    /* dark vignette overlay */
     #intro-vignette {
       position: absolute; inset: 0; pointer-events: none;
       background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.55) 100%);
@@ -103,6 +105,7 @@
     }
     a { text-decoration: none; color: inherit; }
 
+    /* ─── Scroll container ─── */
     #scroll-container {
       height: 100vh;
       overflow-y: scroll;
@@ -128,6 +131,7 @@
       padding: 88px 56px 48px;
     }
 
+    /* ─── Top nav ─── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       background: rgba(12,20,32,0.88);
@@ -138,97 +142,361 @@
       max-width: 1160px; margin: 0 auto; padding: 0 56px;
       display: flex; align-items: center; justify-content: space-between; height: 64px;
     }
-    .nav-logo { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+    .nav-logo {
+      display: flex; align-items: center; gap: 12px; cursor: pointer;
+    }
     .nav-logo img { height: 40px; mix-blend-mode: lighten; }
-    .nav-logo-text { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 500; letter-spacing: 0.01em; color: var(--white); }
+    .nav-logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px; font-weight: 500; letter-spacing: 0.01em;
+      color: var(--white);
+    }
     .nav-links { display: flex; align-items: center; gap: 32px; }
-    .nav-links a { color: var(--muted); font-size: 13px; font-weight: 400; letter-spacing: 0.04em; text-transform: uppercase; transition: color 0.2s; cursor: pointer; }
+    .nav-links a {
+      color: var(--muted); font-size: 13px; font-weight: 400;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      transition: color 0.2s; cursor: pointer;
+    }
     .nav-links a:hover { color: var(--cream); }
-    .btn-nav { background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 7px 20px; border-radius: 3px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; transition: background 0.2s, color 0.2s; }
+    .btn-nav {
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 7px 20px; border-radius: 3px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      cursor: pointer; transition: background 0.2s, color 0.2s;
+    }
     .btn-nav:hover { background: var(--gold); color: var(--navy); }
 
-    #dot-nav { position: fixed; right: 20px; top: 50%; transform: translateY(-50%); z-index: 100; display: flex; flex-direction: column; gap: 6px; }
-    .dot { display: flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.2s; padding: 5px 11px; border-radius: 3px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--dim); font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+    /* ─── Right nav ─── */
+    #dot-nav {
+      position: fixed; right: 20px; top: 50%; transform: translateY(-50%);
+      z-index: 100; display: flex; flex-direction: column; gap: 6px;
+    }
+    .dot {
+      display: flex; align-items: center; gap: 8px;
+      cursor: pointer; transition: all 0.2s;
+      padding: 5px 11px; border-radius: 3px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--dim); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      white-space: nowrap;
+    }
     .dot:hover { background: rgba(255,255,255,0.08); color: var(--muted); }
-    .dot.active { border-color: rgba(201,168,76,0.4); color: var(--gold); background: rgba(201,168,76,0.08); }
-    .dot-pip { width: 4px; height: 4px; border-radius: 50%; background: var(--dim); flex-shrink: 0; transition: background 0.2s; }
+    .dot.active {
+      border-color: rgba(201,168,76,0.4);
+      color: var(--gold);
+      background: rgba(201,168,76,0.08);
+    }
+    .dot-pip {
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--dim); flex-shrink: 0; transition: background 0.2s;
+    }
     .dot.active .dot-pip { background: var(--gold); }
 
+    /* ─── HERO ─── */
     #page-hero { background: var(--navy); }
-    .hero-orb { position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; }
-    .hero-orb-1 { width: 480px; height: 480px; background: rgba(201,168,76,0.1); top: -80px; right: -60px; animation: drift1 14s ease-in-out infinite; }
-    .hero-orb-2 { width: 320px; height: 320px; background: rgba(201,168,76,0.06); bottom: 0; left: -40px; animation: drift2 18s ease-in-out infinite; }
-    .hero-orb-3 { width: 200px; height: 200px; background: rgba(138,155,176,0.07); top: 40%; left: 45%; animation: drift3 22s ease-in-out infinite; }
-    @keyframes drift1 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-40px,40px); } }
-    @keyframes drift2 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(30px,-30px); } }
-    @keyframes drift3 { 0%,100% { transform: translate(0,0); } 33% { transform: translate(20px,-20px); } 66% { transform: translate(-15px,15px); } }
 
-    .hero-inner { position: relative; z-index: 1; display: flex; align-items: center; gap: 64px; }
+    .hero-orb {
+      position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none;
+    }
+    .hero-orb-1 {
+      width: 480px; height: 480px;
+      background: rgba(201,168,76,0.1);
+      top: -80px; right: -60px;
+      animation: drift1 14s ease-in-out infinite;
+    }
+    .hero-orb-2 {
+      width: 320px; height: 320px;
+      background: rgba(201,168,76,0.06);
+      bottom: 0; left: -40px;
+      animation: drift2 18s ease-in-out infinite;
+    }
+    .hero-orb-3 {
+      width: 200px; height: 200px;
+      background: rgba(138,155,176,0.07);
+      top: 40%; left: 45%;
+      animation: drift3 22s ease-in-out infinite;
+    }
+    @keyframes drift1 {
+      0%,100% { transform: translate(0,0); }
+      50% { transform: translate(-40px, 40px); }
+    }
+    @keyframes drift2 {
+      0%,100% { transform: translate(0,0); }
+      50% { transform: translate(30px, -30px); }
+    }
+    @keyframes drift3 {
+      0%,100% { transform: translate(0,0); }
+      33% { transform: translate(20px, -20px); }
+      66% { transform: translate(-15px, 15px); }
+    }
+
+    .hero-inner {
+      position: relative; z-index: 1;
+      display: flex; align-items: center; gap: 64px;
+    }
     .hero-left { flex: 1; }
-    .hero-right { flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-    .hero-eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 28px; }
-    .hero-eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: var(--gold); }
-    .hero-headline { font-family: 'Playfair Display', serif; font-size: clamp(36px,4.5vw,58px); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; text-wrap: balance; color: var(--white); margin-bottom: 24px; animation: fadeUp 0.9s 0.1s ease both; }
-    .hero-headline em { font-style: italic; color: var(--gold-lt); }
-    .hero-sub { font-size: 15px; font-weight: 300; line-height: 1.75; color: var(--muted); max-width: 420px; margin-bottom: 40px; animation: fadeUp 0.9s 0.25s ease both; }
-    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; animation: fadeUp 0.9s 0.4s ease both; }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-right {
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
 
-    .btn-primary { background: var(--gold); color: var(--navy); padding: 12px 28px; border-radius: 3px; font-size: 13px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s, transform 0.2s; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 28px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block; width: 28px; height: 1px; background: var(--gold);
+    }
+
+    .hero-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 4.5vw, 58px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      text-wrap: balance;
+      color: var(--white);
+      margin-bottom: 24px;
+      animation: fadeUp 0.9s 0.1s ease both;
+    }
+    .hero-headline em {
+      font-style: italic;
+      color: var(--gold-lt);
+    }
+
+    .hero-sub {
+      font-size: 15px; font-weight: 300; line-height: 1.75;
+      color: var(--muted); max-width: 420px;
+      margin-bottom: 40px;
+      animation: fadeUp 0.9s 0.25s ease both;
+    }
+
+    .hero-btns {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      animation: fadeUp 0.9s 0.4s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: var(--navy);
+      padding: 12px 28px; border-radius: 3px;
+      font-size: 13px; font-weight: 600;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      border: none; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: background 0.2s, transform 0.2s;
+    }
     .btn-primary:hover { background: var(--gold-lt); transform: translateY(-2px); }
-    .btn-ghost { background: transparent; color: var(--cream); padding: 12px 28px; border-radius: 3px; font-size: 13px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; border: 1px solid rgba(237,232,223,0.2); cursor: pointer; transition: border-color 0.2s, color 0.2s, transform 0.2s; }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--cream);
+      padding: 12px 28px; border-radius: 3px;
+      font-size: 13px; font-weight: 500;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      border: 1px solid rgba(237,232,223,0.2); cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, transform 0.2s;
+    }
     .btn-ghost:hover { border-color: var(--cream); transform: translateY(-2px); }
 
-    .hero-logo-wrap { position: relative; animation: fadeUp 0.9s ease both; }
-    .hero-logo-wrap::before { content: ''; position: absolute; inset: -32px; background: radial-gradient(circle, rgba(201,168,76,0.18) 0%, transparent 70%); border-radius: 50%; animation: glowPulse 4s ease-in-out infinite; }
-    .hero-logo-wrap img { position: relative; height: 180px; mix-blend-mode: lighten; filter: drop-shadow(0 0 24px rgba(201,168,76,0.35)); animation: floatY 5s ease-in-out infinite; }
-    @keyframes glowPulse { 0%,100% { opacity: 0.7; transform: scale(1); } 50% { opacity: 1; transform: scale(1.08); } }
-    @keyframes floatY { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-    .hero-rule { width: 48px; height: 2px; background: linear-gradient(to right, var(--gold), transparent); margin-bottom: 20px; }
+    .hero-logo-wrap {
+      position: relative;
+      animation: fadeUp 0.9s ease both;
+    }
+    .hero-logo-wrap::before {
+      content: '';
+      position: absolute; inset: -32px;
+      background: radial-gradient(circle, rgba(201,168,76,0.18) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: glowPulse 4s ease-in-out infinite;
+    }
+    .hero-logo-wrap img {
+      position: relative;
+      height: 180px;
+      mix-blend-mode: lighten;
+      filter: drop-shadow(0 0 24px rgba(201,168,76,0.35));
+      animation: floatY 5s ease-in-out infinite;
+    }
+    @keyframes glowPulse {
+      0%,100% { opacity: 0.7; transform: scale(1); }
+      50%      { opacity: 1;   transform: scale(1.08); }
+    }
+    @keyframes floatY {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-12px); }
+    }
 
+    /* decorative rule */
+    .hero-rule {
+      width: 48px; height: 2px;
+      background: linear-gradient(to right, var(--gold), transparent);
+      margin-bottom: 20px;
+    }
+
+    /* ─── SERVICES ─── */
     #page-services { background: var(--navy-2); border-top: 1px solid rgba(255,255,255,0.05); }
-    .section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
-    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(26px,3vw,38px); font-weight: 700; line-height: 1.15; text-wrap: balance; color: var(--white); margin-bottom: 10px; }
-    .section-sub { font-size: 14px; font-weight: 300; color: var(--muted); margin-bottom: 40px; line-height: 1.7; max-width: 520px; }
-    .services-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
-    .svc-card { background: var(--navy-2); padding: 28px 24px; transition: background 0.2s; position: relative; }
-    .svc-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
+
+    .section-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(26px, 3vw, 38px);
+      font-weight: 700; line-height: 1.15;
+      text-wrap: balance; color: var(--white);
+      margin-bottom: 10px;
+    }
+    .section-sub {
+      font-size: 14px; font-weight: 300;
+      color: var(--muted); margin-bottom: 40px; line-height: 1.7;
+      max-width: 520px;
+    }
+
+    .services-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 4px; overflow: hidden;
+    }
+    .svc-card {
+      background: var(--navy-2);
+      padding: 28px 24px;
+      transition: background 0.2s;
+      position: relative;
+    }
+    .svc-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
     .svc-card:hover { background: var(--navy-3); }
     .svc-card:hover::before { transform: scaleX(1); }
-    .svc-icon { width: 36px; height: 36px; color: var(--gold); margin-bottom: 16px; }
+
+    .svc-icon {
+      width: 36px; height: 36px;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
     .svc-icon i { width: 24px; height: 24px; }
-    .svc-card h3 { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 500; margin-bottom: 8px; color: var(--white); }
+    .svc-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px; font-weight: 500;
+      margin-bottom: 8px; color: var(--white);
+    }
     .svc-card p { color: var(--muted); font-size: 13px; line-height: 1.65; font-weight: 300; }
 
+    /* ─── ABOUT ─── */
     #page-about { background: var(--navy); border-top: 1px solid rgba(255,255,255,0.05); }
-    .about-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
-    .about-left p { font-size: 13px; font-weight: 300; color: var(--muted); line-height: 1.7; margin-bottom: 18px; max-width: 440px; }
+
+    .about-layout {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
+    }
+    .about-left {}
+    .about-left p {
+      font-size: 13px; font-weight: 300; color: var(--muted);
+      line-height: 1.7; margin-bottom: 18px; max-width: 440px;
+    }
     .features-list { display: flex; flex-direction: column; gap: 6px; }
-    .feat { display: flex; align-items: flex-start; gap: 12px; padding: 9px 14px; border-left: 2px solid rgba(201,168,76,0.3); background: rgba(201,168,76,0.04); border-radius: 0 3px 3px 0; transition: border-color 0.2s, background 0.2s; }
+    .feat {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 9px 14px;
+      border-left: 2px solid rgba(201,168,76,0.3);
+      background: rgba(201,168,76,0.04);
+      border-radius: 0 3px 3px 0;
+      transition: border-color 0.2s, background 0.2s;
+    }
     .feat:hover { border-left-color: var(--gold); background: rgba(201,168,76,0.08); }
     .feat i { width: 14px; height: 14px; color: var(--gold); flex-shrink: 0; margin-top: 2px; }
     .feat span { color: var(--cream); font-size: 13px; font-weight: 400; line-height: 1.4; }
-    .about-right { display: flex; align-items: center; justify-content: center; }
-    .about-card { background: linear-gradient(145deg, var(--navy-3), var(--navy-4)); border: 1px solid rgba(201,168,76,0.2); border-radius: 6px; padding: 32px 28px; text-align: center; width: 100%; }
-    .about-card img { height: 80px; mix-blend-mode: lighten; margin-bottom: 16px; filter: drop-shadow(0 0 20px rgba(201,168,76,0.3)); }
-    .about-card h3 { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 500; margin-bottom: 6px; color: var(--white); }
-    .about-card p { color: var(--muted); font-size: 13px; font-weight: 300; }
-    .about-card-rule { width: 32px; height: 1px; background: var(--gold); margin: 16px auto; opacity: 0.6; }
 
+    .about-right {
+      display: flex; align-items: center; justify-content: center;
+    }
+    .about-card {
+      background: linear-gradient(145deg, var(--navy-3), var(--navy-4));
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 6px; padding: 32px 28px;
+      text-align: center; width: 100%;
+    }
+    .about-card img {
+      height: 80px; mix-blend-mode: lighten; margin-bottom: 16px;
+      filter: drop-shadow(0 0 20px rgba(201,168,76,0.3));
+    }
+    .about-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px; font-weight: 500; margin-bottom: 6px; color: var(--white);
+    }
+    .about-card p { color: var(--muted); font-size: 13px; font-weight: 300; }
+    .about-card-rule {
+      width: 32px; height: 1px;
+      background: var(--gold); margin: 16px auto;
+      opacity: 0.6;
+    }
+
+    /* ─── CONTACT ─── */
     #page-contact { background: var(--navy-2); border-top: 1px solid rgba(255,255,255,0.05); }
     #page-contact .page-inner { align-items: center; text-align: center; }
-    .contact-details { display: flex; flex-direction: column; gap: 24px; margin-top: 16px; }
-    .contact-item { display: flex; align-items: center; justify-content: center; gap: 14px; }
-    .contact-icon { width: 36px; height: 36px; border-radius: 3px; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .contact-icon i { width: 16px; height: 16px; color: var(--gold); }
-    .contact-text { font-size: 16px; font-weight: 400; color: var(--cream); letter-spacing: 0.01em; }
-    .footer-rule { width: 48px; height: 1px; background: rgba(201,168,76,0.3); margin: 48px auto 28px; }
-    .flogo { display: flex; align-items: center; justify-content: center; gap: 12px; }
-    .flogo img { height: 26px; mix-blend-mode: lighten; opacity: 0.7; }
-    .flogo-name { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 400; color: var(--dim); }
-    .copyright { color: var(--dim); font-size: 11px; margin-top: 10px; letter-spacing: 0.04em; }
 
-    @media (max-width: 1024px) { .services-grid { grid-template-columns: repeat(2,1fr); } }
+    .contact-details {
+      display: flex; flex-direction: column; gap: 24px;
+      margin-top: 16px;
+    }
+    .contact-item {
+      display: flex; align-items: center; justify-content: center; gap: 14px;
+    }
+    .contact-icon {
+      width: 36px; height: 36px; border-radius: 3px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.2);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .contact-icon i { width: 16px; height: 16px; color: var(--gold); }
+    .contact-text {
+      font-size: 16px; font-weight: 400; color: var(--cream); letter-spacing: 0.01em;
+    }
+
+    .footer-rule {
+      width: 48px; height: 1px;
+      background: rgba(201,168,76,0.3);
+      margin: 48px auto 28px;
+    }
+    .flogo {
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+    }
+    .flogo img { height: 26px; mix-blend-mode: lighten; opacity: 0.7; }
+    .flogo-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 14px; font-weight: 400; color: var(--dim);
+    }
+    .copyright {
+      color: var(--dim); font-size: 11px; margin-top: 10px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 1024px) {
+      .services-grid { grid-template-columns: repeat(2,1fr); }
+    }
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .page-inner { padding: 80px 24px 32px; }
@@ -239,11 +507,15 @@
       .services-grid { grid-template-columns: 1fr; }
       #dot-nav { display: none; }
     }
-    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
   </style>
 </head>
 <body>
 
+<!-- INTRO -->
 <div id="intro">
   <img id="house-img"
     src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1920&q=85&auto=format&fit=crop"
@@ -258,6 +530,7 @@
   </div>
 </div>
 
+<!-- NAV -->
 <nav>
   <div class="nav-inner">
     <div class="nav-logo" onclick="goTo(0)">
@@ -273,6 +546,7 @@
   </div>
 </nav>
 
+<!-- RIGHT NAV -->
 <div id="dot-nav">
   <div class="dot active" onclick="goTo(0)"><span class="dot-pip"></span>Home</div>
   <div class="dot" onclick="goTo(1)"><span class="dot-pip"></span>Services</div>
@@ -281,6 +555,8 @@
 </div>
 
 <div id="scroll-container">
+
+  <!-- HERO -->
   <div class="page" id="page-hero">
     <div class="hero-orb hero-orb-1"></div>
     <div class="hero-orb hero-orb-2"></div>
@@ -290,34 +566,61 @@
         <div class="hero-left">
           <div class="hero-eyebrow">Property Management</div>
           <div class="hero-rule"></div>
-          <h1 class="hero-headline">Your property,<br><em>expertly managed.</em></h1>
-          <p class="hero-sub">Theomie Properties Ltd delivers attentive, professional management for landlords and tenants across the United Kingdom — so your investment is protected and your tenants are well cared for.</p>
+          <h1 class="hero-headline">
+            Your property,<br><em>expertly managed.</em>
+          </h1>
+          <p class="hero-sub">
+            Theomie Properties Ltd delivers attentive, professional management for landlords and tenants across the United Kingdom — so your investment is protected and your tenants are well cared for.
+          </p>
           <div class="hero-btns">
-            <button class="btn-primary" onclick="goTo(3)">Get in Touch <i data-lucide="arrow-right" style="width:16px;height:16px"></i></button>
+            <button class="btn-primary" onclick="goTo(3)">
+              Get in Touch
+              <i data-lucide="arrow-right" style="width:16px;height:16px"></i>
+            </button>
             <button class="btn-ghost" onclick="goTo(1)">Our Services</button>
           </div>
         </div>
         <div class="hero-right">
-          <div class="hero-logo-wrap"><img src="public/logo.png" alt="Theomie Properties" /></div>
+          <div class="hero-logo-wrap">
+            <img src="public/logo.png" alt="Theomie Properties" />
+          </div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- SERVICES -->
   <div class="page" id="page-services">
     <div class="page-inner">
       <div class="section-label">What we offer</div>
       <h2 class="section-title">Comprehensive property services</h2>
       <p class="section-sub">From tenant sourcing to day-to-day management, we handle every aspect of your property portfolio with care and precision.</p>
       <div class="services-grid">
-        <div class="svc-card"><div class="svc-icon"><i data-lucide="home"></i></div><h3>Property Management</h3><p>Full-service oversight — tenant screening, rent collection, and maintenance coordination handled on your behalf.</p></div>
-        <div class="svc-card"><div class="svc-icon"><i data-lucide="key"></i></div><h3>Rental Properties</h3><p>Quality residential lets across prime UK locations, matched carefully to suitable tenants.</p></div>
-        <div class="svc-card"><div class="svc-icon"><i data-lucide="trending-up"></i></div><h3>Investment Advisory</h3><p>Expert guidance on property acquisitions and portfolio growth to maximise long-term returns.</p></div>
-        <div class="svc-card"><div class="svc-icon"><i data-lucide="shield"></i></div><h3>Tenant Services</h3><p>Dedicated support for our tenants — responsive communication and fast resolution of maintenance issues.</p></div>
+        <div class="svc-card">
+          <div class="svc-icon"><i data-lucide="home"></i></div>
+          <h3>Property Management</h3>
+          <p>Full-service oversight — tenant screening, rent collection, and maintenance coordination handled on your behalf.</p>
+        </div>
+        <div class="svc-card">
+          <div class="svc-icon"><i data-lucide="key"></i></div>
+          <h3>Rental Properties</h3>
+          <p>Quality residential lets across prime UK locations, matched carefully to suitable tenants.</p>
+        </div>
+        <div class="svc-card">
+          <div class="svc-icon"><i data-lucide="trending-up"></i></div>
+          <h3>Investment Advisory</h3>
+          <p>Expert guidance on property acquisitions and portfolio growth to maximise long-term returns.</p>
+        </div>
+        <div class="svc-card">
+          <div class="svc-icon"><i data-lucide="shield"></i></div>
+          <h3>Tenant Services</h3>
+          <p>Dedicated support for our tenants — responsive communication and fast resolution of maintenance issues.</p>
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- ABOUT -->
   <div class="page" id="page-about">
     <div class="page-inner">
       <div class="about-layout">
@@ -346,27 +649,42 @@
     </div>
   </div>
 
+  <!-- CONTACT -->
   <div class="page" id="page-contact">
     <div class="page-inner">
       <div class="section-label">Reach us</div>
       <h2 class="section-title">Get in touch</h2>
       <p class="section-sub" style="text-align:center;margin:0 auto 0">Ready to discuss your property needs? We'd love to hear from you.</p>
       <div class="contact-details">
-        <div class="contact-item"><div class="contact-icon"><i data-lucide="phone"></i></div><span class="contact-text">+44 7725 712571</span></div>
-        <div class="contact-item"><div class="contact-icon"><i data-lucide="mail"></i></div><span class="contact-text">theo@theomieproperties.com</span></div>
-        <div class="contact-item"><div class="contact-icon"><i data-lucide="map-pin"></i></div><span class="contact-text">United Kingdom</span></div>
+        <div class="contact-item">
+          <div class="contact-icon"><i data-lucide="phone"></i></div>
+          <span class="contact-text">+44 7725 712571</span>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><i data-lucide="mail"></i></div>
+          <span class="contact-text">theo@theomieproperties.com</span>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><i data-lucide="map-pin"></i></div>
+          <span class="contact-text">United Kingdom</span>
+        </div>
       </div>
       <div class="footer-rule"></div>
-      <div class="flogo"><img src="public/logo.png" alt="Theomie Properties" /><span class="flogo-name">Theomie Properties Ltd</span></div>
+      <div class="flogo">
+        <img src="public/logo.png" alt="Theomie Properties" />
+        <span class="flogo-name">Theomie Properties Ltd</span>
+      </div>
       <p class="copyright">&copy; <span id="yr"></span> Theomie Properties Ltd. All rights reserved.</p>
     </div>
   </div>
+
 </div>
 
 <script>
   lucide.createIcons();
   document.getElementById('yr').textContent = new Date().getFullYear();
 
+  // ── Intro animation ──
   const intro = document.getElementById('intro');
   const houseImg = document.getElementById('house-img');
   const introPrompt = document.getElementById('intro-prompt');
@@ -399,7 +717,9 @@
   const container = document.getElementById('scroll-container');
   const pages = document.querySelectorAll('.page');
   const dots  = document.querySelectorAll('.dot');
+
   function goTo(i) { pages[i].scrollIntoView({ behavior: 'smooth' }); }
+
   function updateDots() {
     const cur = Math.round(container.scrollTop / container.clientHeight);
     dots.forEach((d, i) => d.classList.toggle('active', i === cur));
