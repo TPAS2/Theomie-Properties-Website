@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import KyriLoco from "./pages/KyriLoco";
 import Dashboard from "./pages/Dashboard";
 import Properties from "./pages/Properties";
 import Tenants from "./pages/Tenants";
@@ -17,7 +16,6 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/kyriloco" element={<KyriLoco />} />
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/properties" element={<ProtectedRoute><Properties /></ProtectedRoute>} />
         <Route path="/tenants" element={<ProtectedRoute><Tenants /></ProtectedRoute>} />

@@ -15,8 +15,6 @@ export default function Login() {
     if (password === import.meta.env.VITE_DASHBOARD_PASS) {
       sessionStorage.setItem("authenticated", "true");
       navigate("/dashboard");
-    } else if (password === import.meta.env.VITE_KYRILOCO_PASS) {
-      navigate("/kyriloco");
     } else {
       setError(true);
       setPassword("");
