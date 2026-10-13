@@ -12,10 +12,10 @@ export default function Login() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === "TPAS217") {
+    if (password === import.meta.env.VITE_DASHBOARD_PASS) {
       sessionStorage.setItem("authenticated", "true");
       navigate("/dashboard");
-    } else if (password === "PocoLoco") {
+    } else if (password === import.meta.env.VITE_KYRILOCO_PASS) {
       navigate("/kyriloco");
     } else {
       setError(true);
